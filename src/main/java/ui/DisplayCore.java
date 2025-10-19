@@ -20,7 +20,7 @@ public class DisplayCore implements AutoCloseable {
         refreshDisplayDimensions();
     }
 
-    void refreshDisplayDimensions() throws IOException {
+    void refreshDisplayDimensions() {
         cols = terminal.getWidth();
         rows = terminal.getHeight();
     }
