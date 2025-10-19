@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="08165818-1ee2-4447-a49a-5be44b402499" name="Changes" comment="Create Main application container">
       <change afterPath="$PROJECT_DIR$/run_the_fucker.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/components/Background.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/ui/Color.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/ui/Cursor.java" afterDir="false" />
@@ -164,6 +162,45 @@
       <option name="presentableId" value="Default" />
       <updated>1760879849746</updated>
     </task>
+    <task id="LOCAL-00001" summary="Create .gitignore">
+      <option name="closed" value="true" />
+      <created>1760900136449</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760900136449</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Create necessary project resources">
+      <option name="closed" value="true" />
+      <created>1760900218513</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1760900218513</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Create necessary project resources">
+      <option name="closed" value="true" />
+      <created>1760900226239</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1760900226239</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Create Main application container">
+      <option name="closed" value="true" />
+      <created>1760900257116</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1760900257116</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Create .gitignore" />
+    <MESSAGE value="Create necessary project resources" />
+    <MESSAGE value="Create Main application container" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create Main application container" />
   </component>
 </project>
