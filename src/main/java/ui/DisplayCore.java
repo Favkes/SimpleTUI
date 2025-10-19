@@ -70,7 +70,7 @@ public class DisplayCore implements AutoCloseable {
         return !os.contains("win") || term != null && term.contains("xterm");
     }
 
-    public void updateFrame() {
+    public void refreshDisplay() {
         terminal.writer().print(frameBody);
         terminal.flush();
     }
