@@ -1,5 +1,6 @@
 package ui;
 
+@SuppressWarnings("unused")
 public class Color {
     public static final String TEMPLATE = "\u001B[%dm";
     public static final String RESET    = "\u001B[0m";
