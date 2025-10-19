@@ -10,7 +10,7 @@ public class DisplayCore implements AutoCloseable {
     int cols;
     int rows;
 
-    private final Terminal terminal;
+    public final Terminal terminal;
 
     public DisplayCore() throws Exception {
         terminal = TerminalBuilder
