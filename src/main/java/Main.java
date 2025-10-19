@@ -6,10 +6,10 @@ public class Main {
     public static void main(String[] args) {
         Displayer display = null;
 
-        try {
-            // ANSI support install
-            AnsiConsole.systemInstall();
+        // ANSI support install
+        AnsiConsole.systemInstall();
 
+        try {
             // App init
             display = new Displayer();
             display.init();
@@ -21,18 +21,8 @@ public class Main {
         catch (Exception e) {
             e.printStackTrace();
         }
-        finally {
-            // Display cleanup
-            if (display != null) {
-                try {
-                    display.exit();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
 
-            // ANSI support uninstall
-            AnsiConsole.systemUninstall();
-        }
+        // ANSI support uninstall
+        AnsiConsole.systemUninstall();
     }
 }
