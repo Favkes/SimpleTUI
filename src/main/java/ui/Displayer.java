@@ -7,6 +7,6 @@ public class Displayer extends DisplayCore {
         super();
 
         frameBody = Color.Background.BLUE + Color.Foreground.BLUE
-                + ".".repeat(cols * rows) + Color.RESET;
+                + ".".repeat(frameBodySize) + Color.RESET;
     }
 }

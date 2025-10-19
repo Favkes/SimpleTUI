@@ -9,6 +9,7 @@ public class DisplayCore implements AutoCloseable {
     String frameBody;
     int cols;
     int rows;
+    int frameBodySize;
 
     public final Terminal terminal;
 
@@ -23,6 +24,7 @@ public class DisplayCore implements AutoCloseable {
     void refreshDisplayDimensions() {
         cols = terminal.getWidth();
         rows = terminal.getHeight();
+        frameBodySize = cols * rows;
     }
 
     public void enterAltBuffer() { terminal.writer().print("\u001B[?1049h"); }
