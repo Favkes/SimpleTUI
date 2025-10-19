@@ -4,14 +4,11 @@ import ui.Displayer;
 
 public class Main {
     public static void main(String[] args) {
-        Displayer display = null;
-
         // ANSI support install
         AnsiConsole.systemInstall();
 
-        try {
+        try (Displayer display = new Displayer()) {
             // App init
-            display = new Displayer();
             display.init();
 
             // Main app loop
