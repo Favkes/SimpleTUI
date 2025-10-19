@@ -9,4 +9,10 @@ public class Displayer extends DisplayCore {
         frameBody = Color.Background.BLUE + Color.Foreground.BLUE
                 + ".".repeat(frameBodySize) + Color.RESET;
     }
+
+    @Override
+    public void refreshDisplay() {
+        terminal.writer().print(frameBody);
+        terminal.flush();
+    }
 }
