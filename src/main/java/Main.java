@@ -12,7 +12,7 @@ public class Main {
             display.init();
 
             // Main app loop
-            display.updateFrame();
+            display.refreshDisplay();
 
         }
         catch (Exception e) {
