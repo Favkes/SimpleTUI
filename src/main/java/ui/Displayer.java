@@ -7,7 +7,7 @@ public class Displayer extends DisplayCore {
     public Displayer() throws Exception {
         super();
 
-        frameBody = Color.Background.BLUE + Color.Foreground.BLUE
+        frameBody = Color.Background.RED + Color.Foreground.YELLOW
                 + ".".repeat(frameBodySize) + Color.RESET;
     }
 
