@@ -26,4 +26,8 @@ public class Color {
         public static final String CYAN     = "\u001B[46m";
         public static final String WHITE    = "\u001B[47m";
     }
+
+    public static boolean isBackgroundCode(String ansiCode) {
+        return ansiCode.matches("\u001B\\[(?:4[0-7]|10[0-7]|48;[0-9;]*|0)m");
+    }
 }
