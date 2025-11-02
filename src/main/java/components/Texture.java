@@ -69,7 +69,7 @@ public class Texture {
 
             // Adding new formattedBlock to the processed array
             if (!(matchNumber == 0) && !doUpdateLast) {
-                System.out.println(String.format("%s", substr));
+                System.out.printf("%s%n", substr);
                 formattedChunks.add(new FormattedChunk(rawIndex, currentFormat.clone(), substr));
             }
             else if (doUpdateLast) {
@@ -99,7 +99,7 @@ public class Texture {
 //        );
         if (previous_index < content.length()) {
             // there are some final raw chars left
-            substr = content.substring(previous_index, content.length());
+            substr = content.substring(previous_index);
             raw_symbols += substr;
 //            System.out.println(
 //                    String.format(Color.RESET + "%d %d %d >%s< >%sX" + Color.RESET + "< >%sX" + Color.RESET + "<",
@@ -132,12 +132,12 @@ public class Texture {
         int toDivArrLen = to / raw_symbols.length();
         int to_ = to % raw_symbols.length();                // (to) MOD (texture length)
         int fullArrCycles = toDivArrLen - fromDivArrLen;
-        System.out.println(String.format("fullarrcycles = %d - %d = %d", toDivArrLen, fromDivArrLen, fullArrCycles));
+        System.out.printf("fullarrcycles = %d - %d = %d%n", toDivArrLen, fromDivArrLen, fullArrCycles);
 
         // Locating the first chunk
         int chunkIndex = 0;
         while (formattedChunks.get(++chunkIndex).start < from_) {
-            System.out.println(String.format("--start chunk%d from=%d .start=%d", chunkIndex, from, formattedChunks.get(chunkIndex).start));
+            System.out.printf("--start chunk%d from=%d .start=%d%n", chunkIndex, from, formattedChunks.get(chunkIndex).start);
         }
         chunkIndex--;
 
@@ -146,7 +146,7 @@ public class Texture {
         if (areBothBoundsInOneChunk) {
             // Returning the substring
             FormattedChunk currentChunk = formattedChunks.get(chunkIndex);
-            System.out.println(String.format("start > chunk%d from=%d .start=%d", chunkIndex, from, currentChunk.start));
+            System.out.printf("start > chunk%d from=%d .start=%d%n", chunkIndex, from, currentChunk.start);
             return currentChunk.format +
                     currentChunk.rawContents.substring(
                             from - currentChunk.start,
@@ -161,13 +161,13 @@ public class Texture {
 
         // Adding the first block substring (from)
         FormattedChunk currentChunk = formattedChunks.get(chunkIndex);
-        System.out.println(String.format("start > chunk%d from=%d .start=%d", chunkIndex, from, currentChunk.start));
+        System.out.printf("start > chunk%d from=%d .start=%d%n", chunkIndex, from, currentChunk.start);
         out += currentChunk.format + currentChunk.rawContents.substring(from - currentChunk.start);
 
         // Adding the whole blocks (between)
         while (formattedChunks.get((++chunkIndex + 1) % formattedChunks.size()).start < to) {
 //            chunkIndex++;
-            System.out.println(String.format("--to chunk%d to=%d .start=%d", chunkIndex, to, formattedChunks.get(chunkIndex).start));
+            System.out.printf("--to chunk%d to=%d .start=%d%n", chunkIndex, to, formattedChunks.get(chunkIndex).start);
             currentChunk = formattedChunks.get(chunkIndex);
             out += currentChunk.format + currentChunk.rawContents;
         }
@@ -175,7 +175,7 @@ public class Texture {
 
         // Adding the last block substring (to)
         currentChunk = formattedChunks.get(chunkIndex);
-        System.out.println(String.format("to > chunk%d to=%d .start=%d", chunkIndex, to, currentChunk.start));
+        System.out.printf("to > chunk%d to=%d .start=%d%n", chunkIndex, to, currentChunk.start);
         out += currentChunk.format + currentChunk.rawContents.substring(0, to - currentChunk.start);
 
 //        // SCENARIO #3: Entire array duplication
