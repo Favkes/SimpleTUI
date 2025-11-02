@@ -93,14 +93,14 @@ public class Texture {
             // Set previous index to the next character index (following the currently focused)
             previous_index = matcher.end();
             rawIndex += substr.length();
-            firstFind = false;
         }
 //        System.out.println(
 //                String.format(">>%d/%d", previous_index, content.length())
 //        );
         if (previous_index < content.length()) {
             // there are some final raw chars left
-            String substr = content.substring(previous_index, content.length());
+            substr = content.substring(previous_index, content.length());
+            raw_symbols += substr;
 //            System.out.println(
 //                    String.format(Color.RESET + "%d %d %d >%s< >%sX" + Color.RESET + "< >%sX" + Color.RESET + "<",
 //                            previous_index, content.length(), rawIndex, substr, currentFormat[0], currentFormat[1]));
