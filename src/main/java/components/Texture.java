@@ -60,7 +60,7 @@ public class Texture {
             }
 
             // Cutting out the raw substr
-            String substr = content.substring(previous_index, current_index);
+            substr = content.substring(previous_index, current_index);
             raw_symbols += substr;
 
             // Adding new formattedBlock to the processed array
@@ -83,7 +83,7 @@ public class Texture {
                 doUpdateLast = false;
             }
 
-            // new format update
+            // New format update
             if (Color.isBackgroundCode(targeted_ansi_code)) {
                 currentFormat[0] = targeted_ansi_code;
             }
@@ -129,18 +129,21 @@ public class Texture {
         // div -> whole array repetitions
         // mod -> local edge subarray boundaries
         int fromDivArrLen = from / raw_symbols.length();
-        int fromModArrLen = from % raw_symbols.length();
+        int from_ = from % raw_symbols.length();            // (from) MOD (texture length)
         int toDivArrLen = to / raw_symbols.length();
-        int toModArrLen = to / raw_symbols.length();
+        int to_ = to % raw_symbols.length();                // (to) MOD (texture length)
+        int fullArrCycles = toDivArrLen - fromDivArrLen;
+        System.out.println(String.format("fullarrcycles = %d - %d = %d", toDivArrLen, fromDivArrLen, fullArrCycles));
 
         // Locating the first chunk
         int chunkIndex = 0;
-        while (formattedChunks.get(++chunkIndex).start < from) {
+        while (formattedChunks.get(++chunkIndex).start < from_) {
             System.out.println(String.format("--start chunk%d from=%d .start=%d", chunkIndex, from, formattedChunks.get(chunkIndex).start));
         }
         chunkIndex--;
 
-        boolean areBothBoundsInOneChunk = (formattedChunks.get(chunkIndex + 1).start > to);
+//        // SCENARIO #1: Single block
+        boolean areBothBoundsInOneChunk = (formattedChunks.get(chunkIndex + 1).start > to_);
         if (areBothBoundsInOneChunk) {
             // Returning the substring
             FormattedChunk currentChunk = formattedChunks.get(chunkIndex);
@@ -150,7 +153,9 @@ public class Texture {
                             from - currentChunk.start,
                             to - currentChunk.start
                     );
-        } // else: add first, increment&check if last: { add chunk }, add last :
+        }
+
+//        //SCENARIO #2: Single subarray (No out of bounds)
 
         // var init
         String out = "";
@@ -174,6 +179,10 @@ public class Texture {
         System.out.println(String.format("to > chunk%d to=%d .start=%d", chunkIndex, to, currentChunk.start));
         out += currentChunk.format + currentChunk.rawContents.substring(0, to - currentChunk.start);
 
+//        // SCENARIO #3: Entire array duplication
+        while (--fullArrCycles > 0) {
+            System.out.println("FULLARRAYYYY-----------------------------");
+        }
         return out;
     }
 }
