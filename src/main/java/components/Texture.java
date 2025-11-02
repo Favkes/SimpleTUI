@@ -49,8 +49,7 @@ public class Texture {
             // Important indices
             String targeted_ansi_code = matcher.group();
             current_index = matcher.start();
-
-            if (firstFind) {
+            if (matchNumber == 0) {
                 rawIndex = current_index;
             }
 
