@@ -63,7 +63,6 @@ public class Texture {
             substr = content.substring(previous_index, current_index);
             raw_symbols += substr;
 
-            // Adding new formattedBlock to the processed array
 //            System.out.println(
 //                    String.format(Color.RESET + "%d %d %d >%s< >%sX" + Color.RESET + "< >%sX" + Color.RESET + "<",
 //                            previous_index, current_index, rawIndex, substr, currentFormat[0], currentFormat[1]));
