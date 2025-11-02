@@ -38,18 +38,26 @@ public class Texture {
 
         System.out.println(content + Color.RESET);
 
+        String substr = null;
         int previous_index = 0;
         int current_index;
 
         int rawIndex = 0;
-        boolean firstFind = true;
-        while (matcher.find()) {
+        int matchNumber = -1;
+        boolean doUpdateLast = false;
+        while (matcher.find()) { matchNumber++;
             // Important indices
             String targeted_ansi_code = matcher.group();
             current_index = matcher.start();
 
             if (firstFind) {
                 rawIndex = current_index;
+            }
+
+            System.out.println("now..?");
+            // Previous block contained only ansi code? -> update previous block instead of making new one
+            if (substr != null && substr.isEmpty() && matchNumber > 1) {
+                doUpdateLast = true;
             }
 
             // Cutting out the raw substr
@@ -60,8 +68,20 @@ public class Texture {
 //            System.out.println(
 //                    String.format(Color.RESET + "%d %d %d >%s< >%sX" + Color.RESET + "< >%sX" + Color.RESET + "<",
 //                            previous_index, current_index, rawIndex, substr, currentFormat[0], currentFormat[1]));
-            if (!firstFind) {
+
+            // Adding new formattedBlock to the processed array
+            if (!(matchNumber == 0) && !doUpdateLast) {
+                System.out.println(String.format("%s", substr));
                 formattedChunks.add(new FormattedChunk(rawIndex, currentFormat.clone(), substr));
+            }
+            else if (doUpdateLast) {
+                // ..or updating the last added block if it only contained an ansi escape code.
+                FormattedChunk previousChunk = formattedChunks.getLast();
+                formattedChunks.set(
+                        formattedChunks.size()-1,
+                        new FormattedChunk(previousChunk.start, currentFormat.clone(), substr)
+                );
+                doUpdateLast = false;
             }
 
             // new format update
