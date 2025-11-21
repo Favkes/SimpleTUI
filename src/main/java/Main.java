@@ -20,7 +20,7 @@ public class Main {
             display.refreshDisplay();
 
             texture.loadTexture(
-                    "0123" + Color.Background.BLUE + "4567" + Color.Foreground.RED + "89ab"
+                    "0123" + Color.Background.BLUE + Color.Foreground.BLACK + "4567" + Color.Foreground.RED + "89ab"
             );
             System.out.print("\n");
             texture.test();
