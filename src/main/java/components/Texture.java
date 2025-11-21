@@ -8,19 +8,32 @@ import java.util.regex.*;
 public class Texture {
     public String content;
     public String raw_symbols;  // content - ANSI
+    public int[] rawIndiceMap;      // translates raw index into real index
+    public int[] formatMap;         // links every raw char to a format code from formatsList
+    public FormatTuple[] formatsList;    // contains all format codes used
     ArrayList<FormattedChunk> formattedChunks;  // little optimized ANSI formatting sequence (LOAFS)
 
-//    private String foreground;
-//    private String background;
     private static final Pattern ANSI_ESC_PATTERN = Pattern.compile(
             "\\u001B\\[[;\\d]*m"
     );
 
-    public Texture() {
-        this(Color.Background.BLUE);
-    }
     public Texture(String content) {
         this.content = content;
+    }
+
+    public void preGen() {
+        StringBuilder builder = new StringBuilder();
+        Matcher matcher = ANSI_ESC_PATTERN.matcher(content);
+
+        if (content.charAt(0) != '\u001b') {
+            content = Color.RESET + content;
+        }
+
+        if (matcher.find())
+        while (matcher.find()) {
+
+        }
+
     }
 
     public void loadTexture(String content) {
@@ -118,6 +131,20 @@ public class Texture {
         System.out.print(Color.RESET);
     }
 
+    public void preGenerate(int repeatTimes) {
+        if (repeatTimes < 1) {
+            System.err.println("Texture cannot be repeated less than once!");
+        }
+        StringBuilder textureBody = new StringBuilder();
+        for (FormattedChunk chunk : formattedChunks) {
+            textureBody.append(chunk.format);
+            textureBody.append(chunk.rawContents);
+        }
+//        while (repeatTimes-- != 0) {
+//
+//        }
+    }
+
     public String fetchChunk(int from, int to) {
         // Obv safety clause
         if (from >= to) {
@@ -185,6 +212,8 @@ public class Texture {
         return out;
     }
 }
+
+record FormatTuple(String fg, String bg) {}
 
 class FormattedChunk {
     public int start;
