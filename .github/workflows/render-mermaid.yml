@@ -16,3 +16,7 @@ jobs:
 
       - name: Render Mermaid diagrams in Markdown
         uses: nielsvaneck/render-md-mermaid@v3
+        with:
+          input: 'diagrams/*.mmd'
+          output: 'docs/assets/diagrams'
+          format: 'svg'
