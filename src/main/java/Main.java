@@ -1,7 +1,7 @@
 import org.fusesource.jansi.AnsiConsole;
 import ui.Color;
 import ui.Displayer;
-import components.Texture;
+import components.Texture2;
 
 
 public class Main {
@@ -12,22 +12,20 @@ public class Main {
         try (Displayer display = new Displayer()) {
             // App init
             display.init();
-            Texture texture = new Texture(
+            Texture2 texture = new Texture2(
                     Color.Background.RED + "@" + Color.Background.BLUE + "#"
             );
 
             // Main app loop
-            display.refreshDisplay();
+//            display.refreshDisplay();
 
             texture.loadTexture(
-                    "0123" + Color.Background.BLUE + Color.Foreground.BLACK + "4567" + Color.Foreground.RED + "89ab"
+                    "0123" + Color.generateRGB(true, 250, 170, 170) + Color.Foreground.BLACK + "4567" + Color.Foreground.RED + "89ab"
             );
             System.out.print("\n");
-            texture.test();
-            System.out.print("\n");
-            for (int i=0; i<10; i++)
-                System.out.println(String.format("%d %s" + Color.RESET + "\n", i, texture.fetchChunk(0, i)));
+            texture.preGenerate(10);
 
+            System.out.printf("%s%s\n", texture.fetchChunk(4, 29), Color.RESET);
         }
         catch (Exception e) {
             e.printStackTrace();
