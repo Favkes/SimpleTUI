@@ -183,8 +183,8 @@ public class Texture2 {
 
         return formatAtIndex(from).fmt
                 + patternRepeating.substring(
-                    fetchRawIndex(from),
-                    fetchRawIndex(to)
+                    indexReal2Raw(from),
+                    indexReal2Raw(to)
         );
     }
 }
