@@ -3,7 +3,7 @@ name: Render Mermaid Diagrams
 
 on:
   push:
-    branches: [ master, frame-implementation-simplified-fetching ]
+    branches: [ master, frame-implementation ]
   pull_request:
 
 jobs:
