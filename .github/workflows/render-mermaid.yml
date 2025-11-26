@@ -17,11 +17,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Render .mmd diagrams to svg
+      - name: Install Mermaid CLI
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      - name: Render .mmd → .svg
         run: |
           mkdir -p docs/assets/diagrams
           for f in diagrams/*.mmd; do
             out="docs/assets/diagrams/$(basename "$f" .mmd).svg"
-            docker run --rm -v "${PWD}":/work ghcr.io/mermaid-js/mermaid-cli:latest \
-              -i "/work/$f" -o "/work/$out"
+            echo "Rendering $f → $out"
+            mmdc -i "$f" -o "$out"
           done
