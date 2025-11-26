@@ -189,7 +189,31 @@ public class Texture2 {
     }
 }
 
-record FormatTuple2(String fg, String bg, String fmt) {
+class FormatTuple2 {
+    public String fg;
+    public String bg;
+    public String fmt;
+
+    public FormatTuple2(String _fg, String _bg) {
+        if (_fg.isEmpty() && _bg.isEmpty()) {
+            fg = Color.RESET;
+            bg = "";
+        }
+        else if (_fg.isEmpty()) {
+            fg = "";
+            bg = _bg;
+        }
+        else if (_bg.isEmpty()) {
+            fg = _fg;
+            bg = Color.Background.DEFAULT;
+        }
+        else {
+            fg = _fg;
+            bg = _bg;
+        }
+
+        fmt = fg + bg;
+    }
     public FormatTuple2(String[] formatTuple) {
         this(formatTuple[0], formatTuple[1], formatTuple[0] + formatTuple[1]);
     }
