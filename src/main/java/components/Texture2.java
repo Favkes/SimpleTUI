@@ -215,7 +215,7 @@ class FormatTuple2 {
         fmt = fg + bg;
     }
     public FormatTuple2(String[] formatTuple) {
-        this(formatTuple[0], formatTuple[1], formatTuple[0] + formatTuple[1]);
+        this(formatTuple[0], formatTuple[1]);
     }
 }
 
