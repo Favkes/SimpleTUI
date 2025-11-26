@@ -71,7 +71,7 @@ public class Texture2 {
 
             // Adding new formattedBlock to the processed array
             if (!(matchNumber == 0) && !doUpdateLast) {
-                System.out.printf("%s%n", substr);
+//                System.out.printf("%s%n", substr);
                 formattedChunks.add(new FormattedChunk2(rawIndex, currentFormat.clone(), substr));
             }
             else if (doUpdateLast) {
