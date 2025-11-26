@@ -144,7 +144,7 @@ public class Texture2 {
                 formatPointers.add(formatsList.size() - 1);  // add index of most recent format
 
 //                System.out.printf("%d i%d: \"%s\"", absolute_index, current_real_i, textureBody.charAt(current_real_i));
-//                FormatTuple2 format = formatsList.get(formatPointers.get(absolute_index));
+//                FormatTuple2 format = formatAtIndex(absolute_index));
 //                System.out.printf(" %sformat%d%s\n", format.fg() + format.bg(), formatPointers.get(absolute_index), Color.RESET);
 
                 rawIndexMap.add(current_real_i++);
@@ -152,7 +152,12 @@ public class Texture2 {
         }
 
         StringBuilder patternRepeating_builder = new StringBuilder();
+//        for (int i=0; i<formatsList.size(); i++) {
+//            System.out.printf("%sx%s ", formatsList.get(i).fmt(), Color.RESET);
+//        }
         while (repeatTimes-- != 0) {
+//            patternRepeating_builder.append(formatAtIndex(0).fmt);
+//            patternRepeating_builder.append(Color.RESET);
             patternRepeating_builder.append(textureBody);
         }
 
