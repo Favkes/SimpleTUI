@@ -1,7 +1,7 @@
 import org.fusesource.jansi.AnsiConsole;
 import ui.Color;
 import ui.Displayer;
-import components.Texture2;
+import components.Texture;
 
 
 public class Main {
@@ -12,7 +12,7 @@ public class Main {
         try (Displayer display = new Displayer()) {
             // App init
             display.init();
-            Texture2 texture = new Texture2(
+            Texture texture = new Texture(
                     Color.generateRGB(false, 230, 20, 20)
                     + Color.generateRGB(true, 20, 20, 20)
                     + "|"

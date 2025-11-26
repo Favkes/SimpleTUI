@@ -6,50 +6,45 @@ import java.util.regex.*;
 
 
 public class Texture {
-    public String content;
-    public String raw_symbols;  // content - ANSI
-    public int[] rawIndiceMap;      // translates raw index into real index
-    public int[] formatMap;         // links every raw char to a format code from formatsList
-    public FormatTuple[] formatsList;    // contains all format codes used
+    public String patternSeed;
+    public int rawLength;
+
+    public ArrayList<Integer> rawIndexMap;      // translates raw index into real index
+    public ArrayList<Integer> formatPointers;         // links every raw char to a format code from formatsList
+    public ArrayList<FormatTuple> formatsList;    // contains all format codes used
+    public String patternRepeating;
+
     ArrayList<FormattedChunk> formattedChunks;  // little optimized ANSI formatting sequence (LOAFS)
 
     private static final Pattern ANSI_ESC_PATTERN = Pattern.compile(
             "\\u001B\\[[;\\d]*m"
     );
 
-    public Texture(String content) {
-        this.content = content;
+
+    public Texture(String patternSeed) {
+        this(patternSeed, 20);
     }
 
-    public void preGen() {
-        StringBuilder builder = new StringBuilder();
-        Matcher matcher = ANSI_ESC_PATTERN.matcher(content);
-
-        if (content.charAt(0) != '\u001b') {
-            content = Color.RESET + content;
-        }
-
-        if (matcher.find())
-        while (matcher.find()) {
-
-        }
-
+    public Texture(String patternSeed, int repeatTimes) {
+        this.patternSeed = patternSeed;
+        loadTexture(patternSeed);
+        preGenerate(repeatTimes);
     }
 
-    public void loadTexture(String content) {
+
+    public void loadTexture(String patternSeed) {
         // if unformatted beginning, add reset.
-        if (content.charAt(0) != '\u001b') {
-            content = Color.RESET + content;
+        if (patternSeed.charAt(0) != '\u001b') {
+            patternSeed = Color.RESET + patternSeed;
         }
 
-        Matcher matcher = ANSI_ESC_PATTERN.matcher(content);
+        Matcher matcher = ANSI_ESC_PATTERN.matcher(patternSeed);
 
         String[] currentFormat = new String[] {"", ""}; // (backgr, foregr)
 
-        raw_symbols = "";
         formattedChunks = new ArrayList<>();
 
-        System.out.println(content + Color.RESET);
+        System.out.printf("Loading texture: %s\n", patternSeed + Color.RESET);
 
         String substr = null;
         int previous_index = 0;
@@ -66,23 +61,17 @@ public class Texture {
                 rawIndex = current_index;
             }
 
-            System.out.println("now..?");
             // Previous block contained only ansi code? -> update previous block instead of making new one
             if (substr != null && substr.isEmpty() && matchNumber > 1) {
                 doUpdateLast = true;
             }
 
             // Cutting out the raw substr
-            substr = content.substring(previous_index, current_index);
-            raw_symbols += substr;
-
-//            System.out.println(
-//                    String.format(Color.RESET + "%d %d %d >%s< >%sX" + Color.RESET + "< >%sX" + Color.RESET + "<",
-//                            previous_index, current_index, rawIndex, substr, currentFormat[0], currentFormat[1]));
+            substr = patternSeed.substring(previous_index, current_index);
 
             // Adding new formattedBlock to the processed array
             if (!(matchNumber == 0) && !doUpdateLast) {
-                System.out.printf("%s%n", substr);
+//                System.out.printf("%s%n", substr);
                 formattedChunks.add(new FormattedChunk(rawIndex, currentFormat.clone(), substr));
             }
             else if (doUpdateLast) {
@@ -107,18 +96,15 @@ public class Texture {
             previous_index = matcher.end();
             rawIndex += substr.length();
         }
-//        System.out.println(
-//                String.format(">>%d/%d", previous_index, content.length())
-//        );
-        if (previous_index < content.length()) {
+
+        // remainder of the string
+        if (previous_index < patternSeed.length()) {
             // there are some final raw chars left
-            substr = content.substring(previous_index);
-            raw_symbols += substr;
-//            System.out.println(
-//                    String.format(Color.RESET + "%d %d %d >%s< >%sX" + Color.RESET + "< >%sX" + Color.RESET + "<",
-//                            previous_index, content.length(), rawIndex, substr, currentFormat[0], currentFormat[1]));
+            substr = patternSeed.substring(previous_index);
+
             formattedChunks.add(new FormattedChunk(rawIndex, currentFormat.clone(), substr));
         }
+        rawLength = rawIndex + substr.length();
     }
 
 
@@ -128,103 +114,77 @@ public class Texture {
             System.out.print("|");
             System.out.print(formattedChunk.format + formattedChunk.rawContents);
         }
-        System.out.print(Color.RESET);
+        System.out.print(Color.RESET + "\n");
     }
 
-    public void preGenerate(int repeatTimes) {
-        if (repeatTimes < 1) {
+    public void preGenerate(int minLength) {
+        if (minLength < 1) {
             System.err.println("Texture cannot be repeated less than once!");
         }
+        int repeatTimes = minLength / rawLength + 1;
+
         StringBuilder textureBody = new StringBuilder();
+        rawIndexMap = new ArrayList<>();
+        formatPointers = new ArrayList<>();
+        formatsList = new ArrayList<>();
+
+//        int absolute_index = -1;
         for (FormattedChunk chunk : formattedChunks) {
+
             textureBody.append(chunk.format);
+            formatsList.add(chunk.formatTuple);
+
+            int current_real_i = textureBody.length();
+
             textureBody.append(chunk.rawContents);
+
+            while (current_real_i < textureBody.length()) {
+//                absolute_index++;
+
+                formatPointers.add(formatsList.size() - 1);  // add index of most recent format
+
+//                System.out.printf("%d i%d: \"%s\"", absolute_index, current_real_i, textureBody.charAt(current_real_i));
+//                FormatTuple format = formatAtIndex(absolute_index));
+//                System.out.printf(" %sformat%d%s\n", format.fg() + format.bg(), formatPointers.get(absolute_index), Color.RESET);
+
+                rawIndexMap.add(current_real_i++);
+            }
         }
-//        while (repeatTimes-- != 0) {
-//
+
+        StringBuilder patternRepeating_builder = new StringBuilder();
+//        for (int i=0; i<formatsList.size(); i++) {
+//            System.out.printf("%sx%s ", formatsList.get(i).fmt(), Color.RESET);
 //        }
+        while (repeatTimes-- != 0) {
+//            patternRepeating_builder.append(formatAtIndex(0).fmt);
+//            patternRepeating_builder.append(Color.RESET);
+            patternRepeating_builder.append(textureBody);
+        }
+
+        patternRepeating = patternRepeating_builder.toString();
+    }
+
+    public FormatTuple formatAtIndex(int index) {
+        return formatsList.get(formatPointers.get(index));
+    }
+
+    public int indexReal2Raw(int realIndex) {
+        return rawIndexMap.get(
+                realIndex % rawIndexMap.size())
+                + (rawIndexMap.getLast() + 1)
+                * (realIndex / rawIndexMap.size()
+        );
     }
 
     public String fetchChunk(int from, int to) {
-        // Obv safety clause
-        if (from >= to) {
-            System.err.print("The 'from' parameter has to be smaller than the 'to' parameter.");
-            return "";
-        }
+        int chunkSize = to - from;
+        from %= rawIndexMap.size();
+        to = from + chunkSize;
 
-        // div -> whole array repetitions
-        // mod -> local edge subarray boundaries
-        int fromDivArrLen = from / raw_symbols.length();
-        int from_ = from % raw_symbols.length();            // (from) MOD (texture length)
-        int toDivArrLen = to / raw_symbols.length();
-        int to_ = to % raw_symbols.length();                // (to) MOD (texture length)
-        int fullArrCycles = toDivArrLen - fromDivArrLen;
-        System.out.printf("fullarrcycles = %d - %d = %d%n", toDivArrLen, fromDivArrLen, fullArrCycles);
-
-        // Locating the first chunk
-        int chunkIndex = 0;
-        while (formattedChunks.get(++chunkIndex).start < from_) {
-            System.out.printf("--start chunk%d from=%d .start=%d%n", chunkIndex, from, formattedChunks.get(chunkIndex).start);
-        }
-        chunkIndex--;
-
-//        // SCENARIO #1: Single block
-        boolean areBothBoundsInOneChunk = (formattedChunks.get(chunkIndex + 1).start > to_);
-        if (areBothBoundsInOneChunk) {
-            // Returning the substring
-            FormattedChunk currentChunk = formattedChunks.get(chunkIndex);
-            System.out.printf("start > chunk%d from=%d .start=%d%n", chunkIndex, from, currentChunk.start);
-            return currentChunk.format +
-                    currentChunk.rawContents.substring(
-                            from - currentChunk.start,
-                            to - currentChunk.start
-                    );
-        }
-
-//        //SCENARIO #2: Single subarray (No out of bounds)
-
-        // var init
-        String out = "";
-
-        // Adding the first block substring (from)
-        FormattedChunk currentChunk = formattedChunks.get(chunkIndex);
-        System.out.printf("start > chunk%d from=%d .start=%d%n", chunkIndex, from, currentChunk.start);
-        out += currentChunk.format + currentChunk.rawContents.substring(from - currentChunk.start);
-
-        // Adding the whole blocks (between)
-        while (formattedChunks.get((++chunkIndex + 1) % formattedChunks.size()).start < to) {
-//            chunkIndex++;
-            System.out.printf("--to chunk%d to=%d .start=%d%n", chunkIndex, to, formattedChunks.get(chunkIndex).start);
-            currentChunk = formattedChunks.get(chunkIndex);
-            out += currentChunk.format + currentChunk.rawContents;
-        }
-
-
-        // Adding the last block substring (to)
-        currentChunk = formattedChunks.get(chunkIndex);
-        System.out.printf("to > chunk%d to=%d .start=%d%n", chunkIndex, to, currentChunk.start);
-        out += currentChunk.format + currentChunk.rawContents.substring(0, to - currentChunk.start);
-
-//        // SCENARIO #3: Entire array duplication
-        while (--fullArrCycles > 0) {
-            System.out.println("FULLARRAYYYY-----------------------------");
-        }
-        return out;
-    }
-}
-
-record FormatTuple(String fg, String bg) {}
-
-class FormattedChunk {
-    public int start;
-    public String[] formatTuple;
-    public String format;
-    public String rawContents;
-
-    FormattedChunk(int start, String[] formatTuple, String rawContents) {
-        this.start = start;
-        this.formatTuple = formatTuple;
-        this.format = formatTuple[0] + formatTuple[1];
-        this.rawContents = rawContents;
+        return formatAtIndex(from).fmt
+                + patternRepeating.substring(
+                    indexReal2Raw(from),
+                    indexReal2Raw(to)
+        );
     }
 }
