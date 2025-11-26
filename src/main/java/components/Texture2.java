@@ -20,8 +20,15 @@ public class Texture2 {
             "\\u001B\\[[;\\d]*m"
     );
 
+
     public Texture2(String patternSeed) {
+        this(patternSeed, 20);
+    }
+
+    public Texture2(String patternSeed, int repeatTimes) {
         this.patternSeed = patternSeed;
+        loadTexture(patternSeed);
+        preGenerate(repeatTimes);
     }
 
 
