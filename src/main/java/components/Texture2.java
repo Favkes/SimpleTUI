@@ -164,7 +164,6 @@ public class Texture2 {
         from %= rawIndexMap.size();
         to = from + chunkSize;
 
-        System.out.printf("%dfrom%d %dto%d\n", from, fetchRawIndex(from), to, fetchRawIndex(to));
         return formatsList.get(formatPointers.get(from)).fmt()
                 + patternRepeating.substring(
                     fetchRawIndex(from),
