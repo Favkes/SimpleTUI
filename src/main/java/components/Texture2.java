@@ -165,6 +165,7 @@ public class Texture2 {
     }
 
     public int fetchRawIndex(int realIndex) {
+    public int indexReal2Raw(int realIndex) {
         return rawIndexMap.get(
                 realIndex % rawIndexMap.size())
                 + (rawIndexMap.getLast() + 1)
