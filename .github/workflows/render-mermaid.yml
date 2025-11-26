@@ -6,6 +6,9 @@ on:
     branches: [ master, frame-implementation ]
   pull_request:
 
+permissions:
+  contents: write   # ← REQUIRED for generated files
+
 jobs:
   render-diagrams:
     runs-on: ubuntu-latest
