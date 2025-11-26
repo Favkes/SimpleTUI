@@ -158,8 +158,6 @@ public class Texture2 {
     }
 
     public String fetchChunk(int from, int to) {
-        for (int i=0; i<rawIndexMap.size(); i++) System.out.printf("%d ", rawIndexMap.get(i));
-
         int chunkSize = to - from;
         from %= rawIndexMap.size();
         to = from + chunkSize;
