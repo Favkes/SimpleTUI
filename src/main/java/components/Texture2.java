@@ -5,27 +5,27 @@ import java.util.ArrayList;
 import java.util.regex.*;
 
 
-public class Texture {
+public class Texture2 {
     public String patternSeed;
     public int rawLength;
 
     public ArrayList<Integer> rawIndexMap;      // translates raw index into real index
     public ArrayList<Integer> formatPointers;         // links every raw char to a format code from formatsList
-    public ArrayList<FormatTuple> formatsList;    // contains all format codes used
+    public ArrayList<FormatTuple2> formatsList;    // contains all format codes used
     public String patternRepeating;
 
-    ArrayList<FormattedChunk> formattedChunks;  // little optimized ANSI formatting sequence (LOAFS)
+    ArrayList<FormattedChunk2> formattedChunks;  // little optimized ANSI formatting sequence (LOAFS)
 
     private static final Pattern ANSI_ESC_PATTERN = Pattern.compile(
             "\\u001B\\[[;\\d]*m"
     );
 
 
-    public Texture(String patternSeed) {
+    public Texture2(String patternSeed) {
         this(patternSeed, 20);
     }
 
-    public Texture(String patternSeed, int repeatTimes) {
+    public Texture2(String patternSeed, int repeatTimes) {
         this.patternSeed = patternSeed;
         loadTexture(patternSeed);
         preGenerate(repeatTimes);
@@ -72,14 +72,14 @@ public class Texture {
             // Adding new formattedBlock to the processed array
             if (!(matchNumber == 0) && !doUpdateLast) {
 //                System.out.printf("%s%n", substr);
-                formattedChunks.add(new FormattedChunk(rawIndex, currentFormat.clone(), substr));
+                formattedChunks.add(new FormattedChunk2(rawIndex, currentFormat.clone(), substr));
             }
             else if (doUpdateLast) {
                 // ..or updating the last added block if it only contained an ansi escape code.
-                FormattedChunk previousChunk = formattedChunks.getLast();
+                FormattedChunk2 previousChunk = formattedChunks.getLast();
                 formattedChunks.set(
                         formattedChunks.size()-1,
-                        new FormattedChunk(previousChunk.start, currentFormat.clone(), substr)
+                        new FormattedChunk2(previousChunk.start, currentFormat.clone(), substr)
                 );
                 doUpdateLast = false;
             }
@@ -102,7 +102,7 @@ public class Texture {
             // there are some final raw chars left
             substr = patternSeed.substring(previous_index);
 
-            formattedChunks.add(new FormattedChunk(rawIndex, currentFormat.clone(), substr));
+            formattedChunks.add(new FormattedChunk2(rawIndex, currentFormat.clone(), substr));
         }
         rawLength = rawIndex + substr.length();
     }
@@ -110,7 +110,7 @@ public class Texture {
 
     public void test() {
         System.out.print("test(): ");
-        for (FormattedChunk formattedChunk : formattedChunks) {
+        for (FormattedChunk2 formattedChunk : formattedChunks) {
             System.out.print("|");
             System.out.print(formattedChunk.format + formattedChunk.rawContents);
         }
@@ -129,7 +129,7 @@ public class Texture {
         formatsList = new ArrayList<>();
 
 //        int absolute_index = -1;
-        for (FormattedChunk chunk : formattedChunks) {
+        for (FormattedChunk2 chunk : formattedChunks) {
 
             textureBody.append(chunk.format);
             formatsList.add(chunk.formatTuple);
@@ -144,7 +144,7 @@ public class Texture {
                 formatPointers.add(formatsList.size() - 1);  // add index of most recent format
 
 //                System.out.printf("%d i%d: \"%s\"", absolute_index, current_real_i, textureBody.charAt(current_real_i));
-//                FormatTuple format = formatAtIndex(absolute_index));
+//                FormatTuple2 format = formatAtIndex(absolute_index));
 //                System.out.printf(" %sformat%d%s\n", format.fg() + format.bg(), formatPointers.get(absolute_index), Color.RESET);
 
                 rawIndexMap.add(current_real_i++);
@@ -164,7 +164,7 @@ public class Texture {
         patternRepeating = patternRepeating_builder.toString();
     }
 
-    public FormatTuple formatAtIndex(int index) {
+    public FormatTuple2 formatAtIndex(int index) {
         return formatsList.get(formatPointers.get(index));
     }
 
@@ -186,5 +186,49 @@ public class Texture {
                     indexReal2Raw(from),
                     indexReal2Raw(to)
         );
+    }
+}
+
+class FormatTuple2 {
+    public String fg;
+    public String bg;
+    public String fmt;
+
+    public FormatTuple2(String _fg, String _bg) {
+        if (_fg.isEmpty() && _bg.isEmpty()) {
+            fg = Color.RESET;
+            bg = "";
+        }
+        else if (_fg.isEmpty()) {
+            fg = "";
+            bg = _bg;
+        }
+        else if (_bg.isEmpty()) {
+            fg = _fg;
+            bg = Color.Background.DEFAULT;
+        }
+        else {
+            fg = _fg;
+            bg = _bg;
+        }
+
+        fmt = fg + bg;
+    }
+    public FormatTuple2(String[] formatTuple) {
+        this(formatTuple[0], formatTuple[1]);
+    }
+}
+
+class FormattedChunk2 {
+    public int start;
+    public FormatTuple2 formatTuple;
+    public String format;
+    public String rawContents;
+
+    FormattedChunk2(int start, String[] formatTuple, String rawContents) {
+        this.start = start;
+        this.formatTuple = new FormatTuple2(formatTuple);
+        this.format = formatTuple[0] + formatTuple[1];
+        this.rawContents = rawContents;
     }
 }

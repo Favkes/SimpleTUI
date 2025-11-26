@@ -13,21 +13,34 @@ public class Main {
             // App init
             display.init();
             Texture texture = new Texture(
-                    Color.Background.RED + "@" + Color.Background.BLUE + "#"
+                    Color.generateRGB(false, 230, 20, 20)
+                    + Color.generateRGB(true, 20, 20, 20)
+                    + "|"
+                    + Color.generateRGB(true, 50, 50, 50)
+                    + Color.generateRGB(false, 50, 50, 50)
+                    + "."
+                    + Color.generateRGB(true, 70, 70, 70)
+                    + Color.generateRGB(false, 70, 70, 70)
+                    + "."
+                    + Color.generateRGB(true, 100, 250, 100)
+                    + Color.generateRGB(false, 100, 100, 100)
+                    + "."
+                    + Color.generateRGB(true, 130, 130, 130)
+                    + Color.generateRGB(false, 130, 130, 130)
+                    + "."
             );
+//            texture.loadTexture(
+//                    Color.Background.BLUE + "0123" + Color.generateRGB(true, 250, 170, 170) + Color.Foreground.BLACK + "4567" + Color.Foreground.RED + "89ab"
+//            );
+            System.out.print("\n");
+            texture.preGenerate(50);
+
+
+            for (int i=0; i<10; i++)
+                System.out.printf("%s%s\n", texture.fetchChunk(i, i+20), Color.RESET);
 
             // Main app loop
-            display.refreshDisplay();
-
-            texture.loadTexture(
-                    "0123" + Color.Background.BLUE + "4567" + Color.Foreground.RED + "89ab"
-            );
-            System.out.print("\n");
-            texture.test();
-            System.out.print("\n");
-            for (int i=0; i<10; i++)
-                System.out.println(String.format("%d %s" + Color.RESET + "\n", i, texture.fetchChunk(0, i)));
-
+//            display.refreshDisplay();
         }
         catch (Exception e) {
             e.printStackTrace();
