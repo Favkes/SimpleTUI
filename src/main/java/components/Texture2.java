@@ -44,7 +44,7 @@ public class Texture2 {
 
         formattedChunks = new ArrayList<>();
 
-        System.out.println(patternSeed + Color.RESET);
+        System.out.printf("Loading texture: %s\n", patternSeed + Color.RESET);
 
         String substr = null;
         int previous_index = 0;
