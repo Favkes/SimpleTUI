@@ -164,7 +164,10 @@ public class Texture2 {
         patternRepeating = patternRepeating_builder.toString();
     }
 
-    public int fetchRawIndex(int realIndex) {
+    public FormatTuple2 formatAtIndex(int index) {
+        return formatsList.get(formatPointers.get(index));
+    }
+
     public int indexReal2Raw(int realIndex) {
         return rawIndexMap.get(
                 realIndex % rawIndexMap.size())
@@ -178,7 +181,7 @@ public class Texture2 {
         from %= rawIndexMap.size();
         to = from + chunkSize;
 
-        return formatsList.get(formatPointers.get(from)).fmt()
+        return formatAtIndex(from).fmt
                 + patternRepeating.substring(
                     fetchRawIndex(from),
                     fetchRawIndex(to)
