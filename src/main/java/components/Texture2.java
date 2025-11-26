@@ -7,6 +7,7 @@ import java.util.regex.*;
 
 public class Texture2 {
     public String patternSeed;
+    public int rawLength;
 
     public ArrayList<Integer> rawIndexMap;      // translates raw index into real index
     public ArrayList<Integer> formatPointers;         // links every raw char to a format code from formatsList
@@ -96,6 +97,7 @@ public class Texture2 {
 
             formattedChunks.add(new FormattedChunk2(rawIndex, currentFormat.clone(), substr));
         }
+        rawLength = rawIndex + substr.length();
     }
 
 
@@ -108,10 +110,11 @@ public class Texture2 {
         System.out.print(Color.RESET + "\n");
     }
 
-    public void preGenerate(int repeatTimes) {
-        if (repeatTimes < 1) {
+    public void preGenerate(int minLength) {
+        if (minLength < 1) {
             System.err.println("Texture cannot be repeated less than once!");
         }
+        int repeatTimes = minLength / rawLength + 1;
 
         StringBuilder textureBody = new StringBuilder();
         rawIndexMap = new ArrayList<>();
