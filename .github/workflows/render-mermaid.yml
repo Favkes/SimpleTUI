@@ -1,9 +1,9 @@
-# .github/workflows/render-mermaid.yml
 name: Render Mermaid Diagrams
 
 on:
   push:
-    branches: [ master, frame-implementation ]
+    branches:
+      - '**'
   pull_request:
 
 permissions:
