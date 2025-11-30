@@ -102,7 +102,7 @@ classDiagram
     }
     DisplayCore ..|> AutoCloseable : implements
     Displayer --|> DisplayCore : extends
-    note for Displayer "disp() overrides DisplayCore.disp()"
+    note for Displayer "refreshDisplay() overrides DisplayCore.refreshDisplay()"
     Displayer "1" *-- "0..*" Layer : contains and manages
     Layer "1" *-- "0..*" Window : windows occupying the layer
     Window "1" *-- "0..*" Widget : components
