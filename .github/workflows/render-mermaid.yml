@@ -26,7 +26,7 @@ jobs:
           for f in docs/diagrams/*.mmd; do
             out="docs/assets/diagrams/$(basename "$f" .mmd).svg"
             echo "Rendering $f → $out"
-            mmdc -i "$f" -o "$out" --puppeteerConfigFile .puppeteer.json
+            mmdc -i "$f" -o "$out" --puppeteerConfigFile .puppeteer.json --theme dark
           done
 
       - name: Commit rendered diagrams
