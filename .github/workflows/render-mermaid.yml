@@ -29,16 +29,17 @@ jobs:
             mmdc -i "$f" -o "$out" --puppeteerConfigFile .puppeteer.json --theme dark
           done
 
-      - name: Commit rendered diagrams
+      - name: Push rendered diagrams to docs-assets branch
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           
-          git add docs/assets/diagrams/*.svg || true
+          git clone --branch docs-assets --single-branch https://github.com/${GITHUB_REPOSITORY}.git docs-assets
+          rm -rf docs-assets/docs/assets/diagrams/*
           
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Render Mermaid diagrams"
-            git push
-          fi
+          cp docs/assets/diagrams/* docs-assets/docs/assets/diagrams
+
+          cd docs-assets
+          git add .
+          git commit -m "Update rendered diagrams" || echo "No changes to commit"
+          git push
