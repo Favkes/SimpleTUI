@@ -37,8 +37,10 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           
-          git clone --branch docs-assets --single-branch https://github.com/${GITHUB_REPOSITORY}.git docs-assets
-          rm -rf docs-assets/docs/assets/diagrams/*
+          git fetch origin docs-assets
+          git worktree add docs-assets docs-assets || git worktree add -b docs-assets docs-assets
+          
+          # rm -rf docs-assets/docs/assets/diagrams/*
           
           mkdir -p docs-assets/docs/assets/diagrams
           cp docs/assets/diagrams/* docs-assets/docs/assets/diagrams
@@ -46,4 +48,5 @@ jobs:
           cd docs-assets
           git add .
           git commit -m "Update rendered diagrams" || echo "No changes to commit"
-          git push origin docs-assets
+          
+          git push origin HEAD:docs-assets
