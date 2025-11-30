@@ -37,6 +37,7 @@ jobs:
           git clone --branch docs-assets --single-branch https://github.com/${GITHUB_REPOSITORY}.git docs-assets
           rm -rf docs-assets/docs/assets/diagrams/*
           
+          mkdir -p docs-assets/docs/assets/diagrams
           cp docs/assets/diagrams/* docs-assets/docs/assets/diagrams
 
           cd docs-assets
