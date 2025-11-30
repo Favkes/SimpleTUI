@@ -20,7 +20,7 @@ public class Displayer extends DisplayCore {
     }
 
     private void renderFrame() {
-        String frameBodyLatest = frameBody;
+        String frameBodyLatest = frameBody.toString();
         boolean continuousEscapeCodeSequence = false;
         String precedingCharFormatting;
 
