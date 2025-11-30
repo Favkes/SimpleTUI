@@ -7,8 +7,11 @@ public class Displayer extends DisplayCore {
     public Displayer() throws Exception {
         super();
 
-        frameBody = Color.Background.RED + Color.Foreground.YELLOW
-                + ".".repeat(frameBodySize) + Color.RESET;
+        frameBody = new StringBuilder();
+        frameBody.append(Color.Background.RED)
+                .append(Color.Foreground.YELLOW)
+                .append(".".repeat(frameBodySize))
+                .append(Color.RESET);
     }
 
     private void goToPixel(int y, int x) {
@@ -31,6 +34,10 @@ public class Displayer extends DisplayCore {
         }
 
         frameBodyPrevious = frameBodyLatest;
+    }
+
+    private void renderFrame2() {
+//        String frame
     }
 
     @Override
