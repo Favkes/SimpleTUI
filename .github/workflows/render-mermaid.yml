@@ -38,7 +38,7 @@ jobs:
           for f in docs/diagrams/*.mmd; do
             out="docs/assets/diagrams/$(basename "$f" .mmd).svg"
             echo "Rendering $f → $out"
-            mmdc -i "$f" -o "$out" --puppeteerConfigFile .puppeteer.json --theme dark
+            mmdc -i "$f" -o "$out" --puppeteerConfigFile .puppeteer.json --theme dark --backgroundColor "#1e1e1e"
           done
 
       - name: Push rendered diagrams to docs-assets branch
