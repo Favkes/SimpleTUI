@@ -6,7 +6,7 @@ import org.jline.terminal.Terminal;
 
 
 public class DisplayCore implements AutoCloseable {
-    String frameBody;
+    StringBuilder frameBody;
     int cols;
     int rows;
     int frameBodySize;
@@ -71,7 +71,7 @@ public class DisplayCore implements AutoCloseable {
     }
 
     public void refreshDisplay() {
-        terminal.writer().print(frameBody);
+        terminal.writer().print(frameBody.toString());
         terminal.flush();
     }
 
