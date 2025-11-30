@@ -20,10 +20,19 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
+      - name: Check for changed .mmd files
+        id: check_mmd
+        run: |
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.mmd$' || true)
+          echo "Changed .mmd files: $CHANGED"
+          echo "::set-output name=changed::$CHANGED"
+
       - name: Install Mermaid CLI
+        if: steps.check_mmd.outputs.changed != ''
         run: npm install -g @mermaid-js/mermaid-cli
 
       - name: Render .mmd → .svg
+        if: steps.check_mmd.outputs.changed != ''
         run: |
           mkdir -p docs/assets/diagrams
           for f in docs/diagrams/*.mmd; do
@@ -33,6 +42,7 @@ jobs:
           done
 
       - name: Push rendered diagrams to docs-assets branch
+        if: steps.check_mmd.outputs.changed != ''
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
