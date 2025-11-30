@@ -23,7 +23,7 @@ jobs:
       - name: Render .mmd → .svg
         run: |
           mkdir -p docs/assets/diagrams
-          for f in diagrams/*.mmd; do
+          for f in docs/diagrams/*.mmd; do
             out="docs/assets/diagrams/$(basename "$f" .mmd).svg"
             echo "Rendering $f → $out"
             mmdc -i "$f" -o "$out"
