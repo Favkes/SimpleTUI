@@ -43,4 +43,4 @@ jobs:
           cd docs-assets
           git add .
           git commit -m "Update rendered diagrams" || echo "No changes to commit"
-          git push
+          git push origin docs-assets
