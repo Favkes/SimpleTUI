@@ -28,3 +28,17 @@ jobs:
             echo "Rendering $f → $out"
             mmdc -i "$f" -o "$out" --puppeteerConfigFile .puppeteer.json
           done
+
+      - name: Commit rendered diagrams
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          
+          git add docs/assets/diagrams/*.svg || true
+          
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Render Mermaid diagrams"
+            git push
+          fi
