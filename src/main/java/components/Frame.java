@@ -1,17 +1,17 @@
 package components;
 
 public class Frame extends Widget {
-    public int[] position;
-    public Texture texture;
-    public int width;
-    public int height;
 
-    public Frame() {
-        position = new int[]{0, 0};
-        texture = null;
-        width = 0;
-        height = 0;
+    public Frame(int posY, int posX, int height, int width, Texture texture) {
+        super(posY, posX, height, width, texture);
     }
+    public Frame(int posY, int posX, int height, int width, String textureSeed) {
+        super(posY, posX, height, width, textureSeed);
+    }
+    public Frame(int posY, int posX, int height, int width) {
+        super(posY, posX, height, width);
+    }
+    public Frame() { super(); }
 
     @Override
     public void printInfo() {

@@ -8,10 +8,10 @@ public abstract class Widget {
     public Texture texture;
 
     public Widget(int posY, int posX, int height, int width, Texture texture) {
-        x = 0;
-        y = 0;
-        this.width = 0;
-        this.height = 0;
+        y = posY;
+        x = posX;
+        this.height = height;
+        this.width = width;
         this.texture = texture;
     }
 
