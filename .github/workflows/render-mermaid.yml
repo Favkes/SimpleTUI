@@ -1,0 +1,62 @@
+name: Render Mermaid Diagrams
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+permissions:
+  contents: write   # ← REQUIRED for generated files
+
+jobs:
+  render-diagrams:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Check for changed .mmd files
+        id: check_mmd
+        run: |
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.mmd$' || true)
+          echo "Changed .mmd files: $CHANGED"
+          echo "::set-output name=changed::$CHANGED"
+
+      - name: Install Mermaid CLI
+        if: steps.check_mmd.outputs.changed != ''
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      - name: Render .mmd → .svg
+        if: steps.check_mmd.outputs.changed != ''
+        run: |
+          mkdir -p docs/assets/diagrams
+          for f in docs/diagrams/*.mmd; do
+            out="docs/assets/diagrams/$(basename "$f" .mmd).svg"
+            echo "Rendering $f → $out"
+            mmdc -i "$f" -o "$out" --puppeteerConfigFile .puppeteer.json --theme dark --backgroundColor "#1e1e1e"
+          done
+
+      - name: Push rendered diagrams to docs-assets branch
+        if: steps.check_mmd.outputs.changed != ''
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          
+          git fetch origin docs-assets
+          git worktree add docs-assets docs-assets || git worktree add -b docs-assets docs-assets
+          
+          # rm -rf docs-assets/docs/assets/diagrams/*
+          
+          mkdir -p docs-assets/docs/assets/diagrams
+          cp docs/assets/diagrams/* docs-assets/docs/assets/diagrams
+
+          cd docs-assets
+          git add .
+          git commit -m "Update rendered diagrams" || echo "No changes to commit"
+          
+          git push origin HEAD:docs-assets

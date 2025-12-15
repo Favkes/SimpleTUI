@@ -2,7 +2,6 @@ package ui;
 
 @SuppressWarnings("unused")
 public class Color {
-    public static final String TEMPLATE = "\u001B[%dm";
     public static final String RESET    = "\u001B[0m";
 
     public static class Foreground {
@@ -14,6 +13,8 @@ public class Color {
         public static final String MAGENTA  = "\u001B[35m";
         public static final String CYAN     = "\u001B[36m";
         public static final String WHITE    = "\u001B[37m";
+
+        public static final String DEFAULT  = WHITE;
     }
 
     public static class Background {
@@ -25,5 +26,23 @@ public class Color {
         public static final String MAGENTA  = "\u001B[45m";
         public static final String CYAN     = "\u001B[46m";
         public static final String WHITE    = "\u001B[47m";
+
+        public static final String DEFAULT  = BLACK;
+    }
+
+    public static class Template {
+        public static final String BASE     = "\u001B[%sm";
+        public static final String BASERGB  = "\u001B[%d;2;%d;%d;%dm";
+    }
+
+    public static boolean isBackgroundCode(String ansiCode) {
+        return ansiCode.matches("\u001B\\[(?:4[0-7]|10[0-7]|48;[0-9;]*|0)m");
+    }
+
+    public static String generateRGB(int R, int G, int B) {
+        return generateRGB(false, R, G, B);
+    }
+    public static String generateRGB(boolean isBackground, int R, int G, int B) {
+        return String.format(Template.BASERGB, (isBackground) ? 48 : 38, R, G, B);
     }
 }

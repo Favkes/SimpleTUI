@@ -8,6 +8,8 @@ out/
 .idea/dictionaries
 .idea/vcs.xml
 *.iml
+build/*
+.gradle/
 
 ### Eclipse ###
 .apt_generated

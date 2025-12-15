@@ -1,14 +1,21 @@
 package ui;
 
 
+import components.Widget;
+
 public class Displayer extends DisplayCore {
     public String frameBodyPrevious;
+    public WindowManager windowManager;
 
-    public Displayer() throws Exception {
+    public Displayer(WindowManager windowManager) throws Exception {
         super();
 
-        frameBody = Color.Background.BLUE + Color.Foreground.BLUE
-                + ".".repeat(frameBodySize) + Color.RESET;
+        frameBody = new StringBuilder();
+        frameBody.append(Color.Background.RED)
+                .append(Color.Foreground.YELLOW)
+                .append(".".repeat(frameBodySize))
+                .append(Color.RESET);
+        this.windowManager = windowManager;
     }
 
     private void goToPixel(int y, int x) {
@@ -17,7 +24,7 @@ public class Displayer extends DisplayCore {
     }
 
     private void renderFrame() {
-        String frameBodyLatest = frameBody;
+        String frameBodyLatest = frameBody.toString();
         boolean continuousEscapeCodeSequence = false;
         String precedingCharFormatting;
 
@@ -31,6 +38,29 @@ public class Displayer extends DisplayCore {
         }
 
         frameBodyPrevious = frameBodyLatest;
+    }
+
+    private void renderFrame2() {
+//        String frame
+    }
+
+    public void renderComponentOfIndex(int componentIndex) {
+        Widget component = windowManager.contents.get(componentIndex);
+        String format = Color.Background.RED + Color.Foreground.YELLOW;
+
+
+        for (int rowIndex = component.y + component.height; rowIndex > component.y; rowIndex--) {
+            int from = rowIndex * cols + component.x;
+            int to = from + component.width;
+
+            frameBody.replace(
+                    to + 1,
+                    to + 1 + format.length(),
+                    format
+            );
+
+            frameBody.replace(from, to, component.texture.fetchChunk(0, to - from));
+        }
     }
 
     @Override
