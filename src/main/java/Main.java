@@ -3,6 +3,8 @@ import ui.Color;
 import ui.Displayer;
 import components.Texture;
 import components.Frame;
+import components.Window;
+import ui.WindowManager;
 
 
 
@@ -10,11 +12,13 @@ public class Main {
     public static void main(String[] args) {
         // ANSI support install
         AnsiConsole.systemInstall();
+        WindowManager manager = new WindowManager();
 
-        try (Displayer display = new Displayer()) {
+        try (Displayer display = new Displayer(manager)) {
 
             // App init
             display.init();
+
             Texture texture = new Texture(
                     Color.generateRGB(false, 230, 20, 20)
                     + Color.generateRGB(true, 20, 20, 20)
@@ -38,10 +42,15 @@ public class Main {
             for (int i=0; i<10; i++)
                 System.out.printf("%s%s\n", texture.fetchChunk(i, i+20), Color.RESET);
 
-            Frame frame1 = new Frame();
+            Frame frame1 = new Frame(
+                    5, 5, 5, 7, texture
+            );
+            display.windowManager.contents.add(frame1);
+
+            display.renderComponentOfIndex(0);
 
             // Main app loop
-//            display.refreshDisplay();
+            display.refreshDisplay();
         }
         catch (Exception e) {
             e.printStackTrace();
