@@ -2,7 +2,9 @@ package components;
 
 import ui.Color;
 
-public class FormatTuple {
+import java.text.Format;
+
+public final class FormatTuple {
     public String fg;
     public String bg;
     public String fmt;
@@ -29,5 +31,12 @@ public class FormatTuple {
     }
     public FormatTuple(String[] formatTuple) {
         this(formatTuple[0], formatTuple[1]);
+    }
+
+    public FormatTuple withBackground(String _bg) {
+        return new FormatTuple(_bg, this.fg);
+    }
+    public FormatTuple withForeground(String _fg) {
+        return new FormatTuple(this.bg, _fg);
     }
 }
