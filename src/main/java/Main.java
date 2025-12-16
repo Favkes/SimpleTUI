@@ -21,8 +21,8 @@ public class Main {
             display.init();
 
             StaticTexture texture = new StaticTexture(
-                    Color.generateRGB(false, 230, 20, 20)
-                    + Color.generateRGB(true, 20, 20, 20)
+                    Color.generateRGB(false, 30, 30, 30)
+                    + Color.generateRGB(true, 30, 30, 30)
                     + "|"
                     + Color.generateRGB(true, 50, 50, 50)
                     + Color.generateRGB(false, 50, 50, 50)
@@ -30,12 +30,13 @@ public class Main {
                     + Color.generateRGB(true, 70, 70, 70)
                     + Color.generateRGB(false, 70, 70, 70)
                     + "."
-                    + Color.generateRGB(true, 100, 250, 100)
-                    + Color.generateRGB(false, 100, 250, 100)
+                    + Color.generateRGB(true, 100, 100, 100)
+                    + Color.generateRGB(false, 100, 100, 100)
                     + "."
                     + Color.generateRGB(true, 130, 130, 130)
                     + Color.generateRGB(false, 130, 130, 130)
-                    + "."
+                    + ".",
+                    10
             );
             System.out.print("\n");
 

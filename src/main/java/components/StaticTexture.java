@@ -1,6 +1,8 @@
 package components;
 import ui.Color;
 
+import java.lang.reflect.Array;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.regex.*;
 
@@ -22,6 +24,10 @@ public class StaticTexture {
     public StaticTexture(String patternSeed, int repeatTimes) {
         this.patternSeed = patternSeed;
         loadTexture(patternSeed);
+
+        ArrayList<Pixel> pixelArrayRepeat = new ArrayList<>(pixelArray.size() * repeatTimes);
+        for (int i = 0; i < repeatTimes; i++) pixelArrayRepeat.addAll(pixelArray);
+        pixelArray = pixelArrayRepeat;
     }
 
 
@@ -33,34 +39,35 @@ public class StaticTexture {
 
         Matcher matcher = ANSI_ESC_PATTERN.matcher(patternSeed);
 
-        String[] currentFormat = new String[] {"", ""}; // (backgr, foregr)
-
-        pixelArray = new ArrayList<>();
-
         System.out.printf("Loading texture: %s\n", patternSeed + Color.RESET);
-        
 
+        FormatTuple currentFormat = new FormatTuple("", "");
+        pixelArray = new ArrayList<>();
         int previous_index = 0;
         while (matcher.find()) {
 
+            // Add all pixels from last format code to the currently targetted format code
             for (int i = previous_index; i < matcher.start(); i++) {
                 pixelArray.add(
-                        new Pixel(currentFormat.clone(), patternSeed.charAt(i))
+                        new Pixel(currentFormat, patternSeed.charAt(i))
                 );
             }
 
+            // Update currentFormat with the currently targetted format code for next iteration
             String ansi = matcher.group();
             if (Color.isBackgroundCode(ansi)) {
-                currentFormat[0] = ansi;
+                currentFormat = currentFormat.withBackground(ansi);
             } else {
-                currentFormat[1] = ansi;
+                currentFormat = currentFormat.withForeground(ansi);
             }
 
             previous_index = matcher.end();
-        }
+        } // no format codes remaining
+
+        // Add all pixels from the last format code to the end of the string
         for (int i = previous_index; i < patternSeed.length(); i++) {
             pixelArray.add(
-                    new Pixel(currentFormat.clone(), patternSeed.charAt(i))
+                    new Pixel(currentFormat, patternSeed.charAt(i))
             );
         }
     }
@@ -74,5 +81,15 @@ public class StaticTexture {
             System.out.print(pixel.formatTuple.fmt + pixel.raw);
         }
         System.out.print(Color.RESET + "\n");
+    }
+
+    public ArrayList<Pixel> generateRepeatingSubarray(int from, int to) {
+        ArrayList<Pixel> out = new ArrayList<>();
+        for (int i = from; i < to; i++) {
+            out.add(
+                    pixelArray.get(i % pixelArray.size())
+            );
+        }
+        return out;
     }
 }
