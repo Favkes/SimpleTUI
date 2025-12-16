@@ -1,12 +1,10 @@
-import components.StaticTexture;
+import components.*;
 import org.fusesource.jansi.AnsiConsole;
 import ui.Color;
 import ui.Displayer;
-import components.Texture;
-import components.Frame;
-import components.Window;
 import ui.WindowManager;
 
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -20,7 +18,7 @@ public class Main {
             // App init
             display.init();
 
-            StaticTexture texture = new StaticTexture(
+            Texture texture = new Texture(
                     Color.generateRGB(false, 30, 30, 30)
                     + Color.generateRGB(true, 30, 30, 30)
                     + "|"
@@ -36,19 +34,23 @@ public class Main {
                     + Color.generateRGB(true, 130, 130, 130)
                     + Color.generateRGB(false, 130, 130, 130)
                     + ".",
-                    10
+                    1
             );
             System.out.print("\n");
 
             texture.test();
-//            texture.preGenerate(50);
 
-//            for (int i=0; i<10; i++)
-//                System.out.printf("%s%s\n", texture.fetchChunk(i, i+20), Color.RESET);
+            for (int i=0; i<10; i++)
+                System.out.printf(
+                        "%s%s\n",
+                        texture.generateRepeatingSubarray(i, i+20).stream()
+                                .map(Pixel::toString)
+                                .collect(Collectors.joining()),
+                        Color.RESET);
 
-//            Frame frame1 = new Frame(
-//                    5, 5, 5, 7, texture
-//            );
+            Frame frame1 = new Frame(
+                    5, 5, 5, 7, texture
+            );
 //            display.windowManager.contents.add(frame1);
 
 //            display.renderComponentOfIndex(0);

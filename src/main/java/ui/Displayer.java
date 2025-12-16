@@ -59,7 +59,7 @@ public class Displayer extends DisplayCore {
                     format
             );
 
-            frameBody.replace(from, to, component.texture.fetchChunk(0, to - from));
+//            frameBody.replace(from, to, component.texture.fetchChunk(0, to - from));
         }
     }
 
