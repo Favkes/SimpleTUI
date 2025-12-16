@@ -5,9 +5,9 @@ import ui.Color;
 import java.text.Format;
 
 public final class FormatTuple {
-    public String fg;
-    public String bg;
-    public String fmt;
+    public final String fg;
+    public final String bg;
+    public final String fmt;
 
     public FormatTuple(String _fg, String _bg) {
         if (_fg.isEmpty() && _bg.isEmpty()) {
@@ -34,9 +34,9 @@ public final class FormatTuple {
     }
 
     public FormatTuple withBackground(String _bg) {
-        return new FormatTuple(_bg, this.fg);
+        return new FormatTuple(this.fg, _bg);
     }
     public FormatTuple withForeground(String _fg) {
-        return new FormatTuple(this.bg, _fg);
+        return new FormatTuple(_fg, this.bg);
     }
 }
