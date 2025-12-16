@@ -1,3 +1,4 @@
+import components.StaticTexture;
 import org.fusesource.jansi.AnsiConsole;
 import ui.Color;
 import ui.Displayer;
@@ -19,7 +20,7 @@ public class Main {
             // App init
             display.init();
 
-            Texture texture = new Texture(
+            StaticTexture texture = new StaticTexture(
                     Color.generateRGB(false, 230, 20, 20)
                     + Color.generateRGB(true, 20, 20, 20)
                     + "|"
@@ -37,20 +38,22 @@ public class Main {
                     + "."
             );
             System.out.print("\n");
-            texture.preGenerate(50);
 
-            for (int i=0; i<10; i++)
-                System.out.printf("%s%s\n", texture.fetchChunk(i, i+20), Color.RESET);
+            texture.test();
+//            texture.preGenerate(50);
 
-            Frame frame1 = new Frame(
-                    5, 5, 5, 7, texture
-            );
-            display.windowManager.contents.add(frame1);
+//            for (int i=0; i<10; i++)
+//                System.out.printf("%s%s\n", texture.fetchChunk(i, i+20), Color.RESET);
 
-            display.renderComponentOfIndex(0);
+//            Frame frame1 = new Frame(
+//                    5, 5, 5, 7, texture
+//            );
+//            display.windowManager.contents.add(frame1);
+
+//            display.renderComponentOfIndex(0);
 
             // Main app loop
-            display.refreshDisplay();
+//            display.refreshDisplay();
         }
         catch (Exception e) {
             e.printStackTrace();
