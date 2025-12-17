@@ -40,7 +40,7 @@ public class DisplayCore implements AutoCloseable {
         frameBodySize = cols * rows;
     }
 
-    void generateBlankPixelMatrix() {
+    public void generateBlankPixelMatrix() {
         pixelMatrix = new ArrayList<>(rows);
         for (int r = 0; r < rows; r++) {
             pixelMatrix.add(
