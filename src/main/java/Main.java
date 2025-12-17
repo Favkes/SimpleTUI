@@ -1,11 +1,11 @@
+import components.*;
 import org.fusesource.jansi.AnsiConsole;
 import ui.Color;
 import ui.Displayer;
-import components.Texture;
-import components.Frame;
-import components.Window;
 import ui.WindowManager;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -13,44 +13,96 @@ public class Main {
         // ANSI support install
         AnsiConsole.systemInstall();
         WindowManager manager = new WindowManager();
+        AdvancedTexture displayBackgroundTexture = new AdvancedTexture(
+                Color.generateRGB(false, 30, 30, 30)
+                + Color.generateRGB(true, 30, 30, 30)
+                + "|"
+                + Color.generateRGB(true, 50, 50, 70)
+                + Color.generateRGB(false, 50, 50, 70)
+                + "."
+                + Color.generateRGB(true, 70, 70, 100)
+                + Color.generateRGB(false, 70, 70, 100)
+                + ".",
+                1
+        );
 
-        try (Displayer display = new Displayer(manager)) {
+        try (Displayer display = new Displayer(manager, displayBackgroundTexture)) {
 
             // App init
             display.init();
 
-            Texture texture = new Texture(
-                    Color.generateRGB(false, 230, 20, 20)
-                    + Color.generateRGB(true, 20, 20, 20)
+
+            // Input thread setup
+            AtomicBoolean applicationRunning = new AtomicBoolean(true);
+
+            Thread inputThread = new Thread(() -> {
+                try {
+                    while (applicationRunning.get()) {
+                        int ch = display.terminal.reader().read();
+                        if (ch == 'q' || ch == 3) {
+                            applicationRunning.set(false);
+                            break;
+                        }
+                        Thread.sleep(10);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            inputThread.setDaemon(true);
+            inputThread.start();
+
+
+            AdvancedTexture texture = new AdvancedTexture(
+                    Color.generateRGB(false, 130, 30, 30)
+                    + Color.generateRGB(true, 130, 30, 30)
                     + "|"
-                    + Color.generateRGB(true, 50, 50, 50)
-                    + Color.generateRGB(false, 50, 50, 50)
+                    + Color.generateRGB(true, 150, 50, 50)
+                    + Color.generateRGB(false, 150, 50, 50)
                     + "."
-                    + Color.generateRGB(true, 70, 70, 70)
-                    + Color.generateRGB(false, 70, 70, 70)
+                    + Color.generateRGB(true, 170, 70, 70)
+                    + Color.generateRGB(false, 170, 70, 70)
                     + "."
-                    + Color.generateRGB(true, 100, 250, 100)
-                    + Color.generateRGB(false, 100, 250, 100)
+                    + Color.generateRGB(true, 170, 100, 100)
+                    + Color.generateRGB(false, 170, 100, 100)
                     + "."
-                    + Color.generateRGB(true, 130, 130, 130)
-                    + Color.generateRGB(false, 130, 130, 130)
-                    + "."
+                    + Color.generateRGB(true, 230, 130, 130)
+                    + Color.generateRGB(false, 230, 130, 130)
+                    + ".",
+                    1,
+                    r -> (100 - r) % 5
             );
             System.out.print("\n");
-            texture.preGenerate(50);
+
+            texture.test();
 
             for (int i=0; i<10; i++)
-                System.out.printf("%s%s\n", texture.fetchChunk(i, i+20), Color.RESET);
+                System.out.printf(
+                        "%s%s\n",
+                        texture.generateRepeatingSubarray(i, i+20).stream()
+                                .map(Pixel::toString)
+                                .collect(Collectors.joining()),
+                        Color.RESET);
 
             Frame frame1 = new Frame(
-                    5, 5, 5, 7, texture
+                    5, 10, 5, 7, texture
             );
             display.windowManager.contents.add(frame1);
 
             display.renderComponentOfIndex(0);
 
             // Main app loop
-            display.refreshDisplay();
+//            display.refreshDisplay();
+//            Thread.sleep(2000);
+
+            while (applicationRunning.get()) {
+                display.generateBlankPixelMatrix();
+                display.rebuildEmpty();
+                display.renderComponentOfIndex(0);
+                display.refreshDisplay();
+                frame1.y += 1;
+                Thread.sleep(1000 / 20);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

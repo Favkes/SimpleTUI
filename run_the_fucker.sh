@@ -18,6 +18,7 @@ echo Building project with Gradle...
 
 if [ $? -ne 0 ]; then
   echo Gradle build failed. Exiting. Dumbass.
+  exit 1
 fi
 
 echo Running SimpleTui
