@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import components.Pixel;
@@ -22,6 +23,8 @@ public class DisplayCore implements AutoCloseable {
 
     public final Terminal terminal;
     private Attributes originalTerminalAttributes;
+    public final InputManager inputManager;
+    public final AtomicBoolean running;
 
     public DisplayCore(Texture texture) throws Exception {
         this.texture = texture;
@@ -32,6 +35,9 @@ public class DisplayCore implements AutoCloseable {
                 .build();
         refreshDisplayDimensions();
         generateBlankPixelMatrix();
+
+        this.running = new AtomicBoolean(true);
+        this.inputManager = new InputManager(terminal, running);
     }
 
     void refreshDisplayDimensions() {
@@ -66,6 +72,8 @@ public class DisplayCore implements AutoCloseable {
         if (isTerminalAltBufferCompatible()) {
             enterAltBuffer();
         }
+
+        inputManager.start();
     }
     public void exit() throws IOException {
         /*
@@ -114,8 +122,9 @@ public class DisplayCore implements AutoCloseable {
     }
 
     @Override
-    public void close() throws IOException {
-        exit();
+    public void close() throws Exception {
+        this.exit();
         terminal.close();
+        inputManager.close();
     }
 }

@@ -2,6 +2,7 @@ import components.*;
 import org.fusesource.jansi.AnsiConsole;
 import ui.Color;
 import ui.Displayer;
+import ui.InputManager;
 import ui.WindowManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,27 +31,6 @@ public class Main {
 
             // App init
             display.init();
-
-
-            // Input thread setup
-            AtomicBoolean applicationRunning = new AtomicBoolean(true);
-
-            Thread inputThread = new Thread(() -> {
-                try {
-                    while (applicationRunning.get()) {
-                        int ch = display.terminal.reader().read();
-                        if (ch == 'q' || ch == 3) {
-                            applicationRunning.set(false);
-                            break;
-                        }
-                        Thread.sleep(10);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-            inputThread.setDaemon(true);
-            inputThread.start();
 
 
             AdvancedTexture texture = new AdvancedTexture(
@@ -90,7 +70,15 @@ public class Main {
 //            display.refreshDisplay();
 //            Thread.sleep(2000);
 
-            while (applicationRunning.get()) {
+
+            // Input thread setup
+            display.inputManager.bindKey('q', () -> display.running.set(false));
+            display.inputManager.bindKey('w', () -> frame1.y--);
+            display.inputManager.bindKey('a', () -> frame1.x--);
+            display.inputManager.bindKey('s', () -> frame1.y++);
+            display.inputManager.bindKey('d', () -> frame1.x++);
+
+            while (display.running.get()) {
                 display.generateBlankPixelMatrix();
                 display.rebuildEmpty();
                 display.renderComponentOfIndex(0);
