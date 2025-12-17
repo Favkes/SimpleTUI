@@ -4,6 +4,7 @@ import ui.Color;
 import ui.Displayer;
 import ui.WindowManager;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 
@@ -30,6 +31,28 @@ public class Main {
             // App init
             display.init();
 
+
+            // Input thread setup
+            AtomicBoolean applicationRunning = new AtomicBoolean(true);
+
+            Thread inputThread = new Thread(() -> {
+                try {
+                    while (applicationRunning.get()) {
+                        int ch = display.terminal.reader().read();
+                        if (ch == 'q' || ch == 3) {
+                            applicationRunning.set(false);
+                            break;
+                        }
+                        Thread.sleep(10);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            inputThread.setDaemon(true);
+            inputThread.start();
+
+
             AdvancedTexture texture = new AdvancedTexture(
                     Color.generateRGB(false, 130, 30, 30)
                     + Color.generateRGB(true, 130, 30, 30)
@@ -47,7 +70,7 @@ public class Main {
                     + Color.generateRGB(false, 230, 130, 130)
                     + ".",
                     1,
-                    r -> r % 5
+                    r -> (100 - r) % 5
             );
             System.out.print("\n");
 
@@ -62,19 +85,22 @@ public class Main {
                         Color.RESET);
 
             Frame frame1 = new Frame(
-                    5, 5, 5, 7, texture
+                    5, 10, 5, 7, texture
             );
             display.windowManager.contents.add(frame1);
 
             display.renderComponentOfIndex(0);
 
             // Main app loop
-            display.refreshDisplay();
-            Thread.sleep(2000);
+//            display.refreshDisplay();
+//            Thread.sleep(2000);
 
-            boolean applicationRunning = true;
-            while (applicationRunning) {
+            while (applicationRunning.get()) {
+                display.generateBlankPixelMatrix();
+                display.rebuildEmpty();
+                display.renderComponentOfIndex(0);
                 display.refreshDisplay();
+                frame1.y += 1;
                 Thread.sleep(1000 / 20);
             }
         }
