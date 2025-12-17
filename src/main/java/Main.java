@@ -54,20 +54,15 @@ public class Main {
 
 
             AdvancedTexture texture = new AdvancedTexture(
-                    Color.generateRGB(false, 130, 30, 30)
-                    + Color.generateRGB(true, 130, 30, 30)
+                    Color.generateBgFg(130, 30, 30, 30, 30, 30)
                     + "|"
-                    + Color.generateRGB(true, 150, 50, 50)
-                    + Color.generateRGB(false, 150, 50, 50)
+                    + Color.generateBgFg(150, 50, 50, 150, 50, 50)
                     + "."
-                    + Color.generateRGB(true, 170, 70, 70)
-                    + Color.generateRGB(false, 170, 70, 70)
+                    + Color.generateBgFg(170, 70, 70, 170, 70, 70)
                     + "."
-                    + Color.generateRGB(true, 170, 100, 100)
-                    + Color.generateRGB(false, 170, 100, 100)
+                    + Color.generateBgFg(170, 100, 100, 170, 100, 100)
                     + "."
-                    + Color.generateRGB(true, 230, 130, 130)
-                    + Color.generateRGB(false, 230, 130, 130)
+                    + Color.generateBgFg(230, 130, 130, 230, 130, 130)
                     + ".",
                     1,
                     r -> (100 - r) % 5

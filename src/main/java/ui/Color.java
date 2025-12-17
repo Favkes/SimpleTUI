@@ -45,4 +45,7 @@ public class Color {
     public static String generateRGB(boolean isBackground, int R, int G, int B) {
         return String.format(Template.BASERGB, (isBackground) ? 48 : 38, R, G, B);
     }
+    public static String generateBgFg(int fR, int fG, int fB, int bR, int bG, int bB) {
+        return generateRGB(fR, fG, fB) + generateRGB(true, bR, bG, bB);
+    }
 }
