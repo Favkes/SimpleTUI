@@ -1,14 +1,15 @@
 package ui;
 
 
+import components.Texture;
 import components.Widget;
 
 public class Displayer extends DisplayCore {
     public String frameBodyPrevious;
     public WindowManager windowManager;
 
-    public Displayer(WindowManager windowManager) throws Exception {
-        super();
+    public Displayer(WindowManager windowManager, Texture texture) throws Exception {
+        super(texture);
 
         frameBody = new StringBuilder();
         frameBody.append(Color.Background.RED)
@@ -63,9 +64,9 @@ public class Displayer extends DisplayCore {
         }
     }
 
-    @Override
-    public void refreshDisplay() {
-        terminal.writer().print(frameBody);
-        terminal.flush();
-    }
+//    @Override
+//    public void refreshDisplay() {
+//        terminal.writer().print(frameBody);
+//        terminal.flush();
+//    }
 }

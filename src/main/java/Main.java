@@ -12,8 +12,20 @@ public class Main {
         // ANSI support install
         AnsiConsole.systemInstall();
         WindowManager manager = new WindowManager();
+        Texture displayBackgroundTexture = new Texture(
+                Color.generateRGB(false, 30, 30, 30)
+                + Color.generateRGB(true, 30, 30, 30)
+                + "|"
+                + Color.generateRGB(true, 50, 50, 70)
+                + Color.generateRGB(false, 50, 50, 70)
+                + "."
+                + Color.generateRGB(true, 70, 70, 100)
+                + Color.generateRGB(false, 70, 70, 100)
+                + ".",
+                1
+        );
 
-        try (Displayer display = new Displayer(manager)) {
+        try (Displayer display = new Displayer(manager, displayBackgroundTexture)) {
 
             // App init
             display.init();
@@ -51,12 +63,13 @@ public class Main {
             Frame frame1 = new Frame(
                     5, 5, 5, 7, texture
             );
-//            display.windowManager.contents.add(frame1);
+            display.windowManager.contents.add(frame1);
 
 //            display.renderComponentOfIndex(0);
 
             // Main app loop
-//            display.refreshDisplay();
+            display.refreshDisplay();
+            Thread.sleep(2000);
         }
         catch (Exception e) {
             e.printStackTrace();
