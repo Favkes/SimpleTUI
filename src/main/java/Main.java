@@ -48,8 +48,21 @@ public class Main {
                     r -> (100 - r) % 5
             );
             System.out.print("\n");
-
             texture.test();
+
+            AdvancedTexture texture2 = new AdvancedTexture(
+                    Color.generateRGB(true, 60, 60, 60)
+                            + Color.generateRGB(false,  190, 160, 190)
+                            + "["
+                            + Color.generateRGB(true, 150, 200, 150)
+                            + Color.generateRGB(false, 30, 30, 30)
+                            + "+++"
+                            + Color.generateRGB(true, 60, 60, 60)
+                            + Color.generateRGB(false, 190, 160, 190)
+                            + "]",
+                    1,
+                    r -> 0
+            );
 
             for (int i=0; i<10; i++)
                 System.out.printf(
@@ -64,7 +77,13 @@ public class Main {
             );
             display.windowManager.contents.add(frame1);
 
+            Frame frame2 = new Frame(
+                    25, 15, 7, 5, texture2
+            );
+            display.windowManager.contents.add(frame2);
+
             display.renderComponentOfIndex(0);
+            display.renderComponentOfIndex(1);
 
             // Main app loop
 //            display.refreshDisplay();
@@ -82,8 +101,9 @@ public class Main {
                 display.generateBlankPixelMatrix();
                 display.rebuildEmpty();
                 display.renderComponentOfIndex(0);
+                display.renderComponentOfIndex(1);
                 display.refreshDisplay();
-                frame1.y += 1;
+//                frame1.y += 1;
                 Thread.sleep(1000 / 20);
             }
         }
