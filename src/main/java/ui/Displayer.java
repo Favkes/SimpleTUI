@@ -1,6 +1,7 @@
 package ui;
 
 
+import components.AdvancedTexture;
 import components.Pixel;
 import components.Texture;
 import components.Widget;
@@ -56,8 +57,14 @@ public class Displayer extends DisplayCore {
         for (int rowIndex = component.y + component.height; rowIndex > component.y; rowIndex--) {
 //            int from = rowIndex * cols + component.x;
 //            int to = from + component.width;
+
+            // Texture coordinates global (local to display)
             int from = component.x;
             int to = from + component.width;
+
+            // Texture coordinates local to component
+            int _from = 0;
+            int _to = to - from;
 
             ArrayList<Pixel> row = pixelMatrix.get(rowIndex);
 
@@ -67,7 +74,11 @@ public class Displayer extends DisplayCore {
 //                    format
 //            );
             row.subList(from, to).clear();
-            row.addAll(from, component.texture.generateRepeatingSubarray(from, to));
+            if (component.texture instanceof AdvancedTexture advTex) {
+                row.addAll(from, advTex.generateRepeatingSubarray(_from, _to, rowIndex));
+            } else {
+                row.addAll(from, component.texture.generateRepeatingSubarray(_from, _to));
+            }
 
 //            frameBody.replace(from, to, component.texture.fetchChunk(0, to - from));
         }

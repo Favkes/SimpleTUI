@@ -12,7 +12,7 @@ public class Main {
         // ANSI support install
         AnsiConsole.systemInstall();
         WindowManager manager = new WindowManager();
-        Texture displayBackgroundTexture = new Texture(
+        AdvancedTexture displayBackgroundTexture = new AdvancedTexture(
                 Color.generateRGB(false, 30, 30, 30)
                 + Color.generateRGB(true, 30, 30, 30)
                 + "|"
@@ -30,7 +30,7 @@ public class Main {
             // App init
             display.init();
 
-            Texture texture = new Texture(
+            AdvancedTexture texture = new AdvancedTexture(
                     Color.generateRGB(false, 130, 30, 30)
                     + Color.generateRGB(true, 130, 30, 30)
                     + "|"
@@ -46,7 +46,8 @@ public class Main {
                     + Color.generateRGB(true, 230, 130, 130)
                     + Color.generateRGB(false, 230, 130, 130)
                     + ".",
-                    1
+                    1,
+                    r -> r % 5
             );
             System.out.print("\n");
 
@@ -70,6 +71,12 @@ public class Main {
             // Main app loop
             display.refreshDisplay();
             Thread.sleep(2000);
+
+            boolean applicationRunning = true;
+            while (applicationRunning) {
+                display.refreshDisplay();
+                Thread.sleep(1000 / 20);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
