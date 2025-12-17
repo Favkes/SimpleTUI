@@ -31,20 +31,20 @@ public class Main {
             display.init();
 
             Texture texture = new Texture(
-                    Color.generateRGB(false, 30, 30, 30)
-                    + Color.generateRGB(true, 30, 30, 30)
+                    Color.generateRGB(false, 130, 30, 30)
+                    + Color.generateRGB(true, 130, 30, 30)
                     + "|"
-                    + Color.generateRGB(true, 50, 50, 50)
-                    + Color.generateRGB(false, 50, 50, 50)
+                    + Color.generateRGB(true, 150, 50, 50)
+                    + Color.generateRGB(false, 150, 50, 50)
                     + "."
-                    + Color.generateRGB(true, 70, 70, 70)
-                    + Color.generateRGB(false, 70, 70, 70)
+                    + Color.generateRGB(true, 170, 70, 70)
+                    + Color.generateRGB(false, 170, 70, 70)
                     + "."
-                    + Color.generateRGB(true, 100, 100, 100)
-                    + Color.generateRGB(false, 100, 100, 100)
+                    + Color.generateRGB(true, 170, 100, 100)
+                    + Color.generateRGB(false, 170, 100, 100)
                     + "."
-                    + Color.generateRGB(true, 130, 130, 130)
-                    + Color.generateRGB(false, 130, 130, 130)
+                    + Color.generateRGB(true, 230, 130, 130)
+                    + Color.generateRGB(false, 230, 130, 130)
                     + ".",
                     1
             );
@@ -65,7 +65,7 @@ public class Main {
             );
             display.windowManager.contents.add(frame1);
 
-//            display.renderComponentOfIndex(0);
+            display.renderComponentOfIndex(0);
 
             // Main app loop
             display.refreshDisplay();

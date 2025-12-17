@@ -1,8 +1,11 @@
 package ui;
 
 
+import components.Pixel;
 import components.Texture;
 import components.Widget;
+
+import java.util.ArrayList;
 
 public class Displayer extends DisplayCore {
     public String frameBodyPrevious;
@@ -24,26 +27,26 @@ public class Displayer extends DisplayCore {
         terminal.writer().print(String.format("\u001B[%d;%dH", y + 1, x + 1));
     }
 
-    private void renderFrame() {
-        String frameBodyLatest = frameBody.toString();
-        boolean continuousEscapeCodeSequence = false;
-        String precedingCharFormatting;
+//    private void renderFrame() {
+//        String frameBodyLatest = frameBody.toString();
+//        boolean continuousEscapeCodeSequence = false;
+//        String precedingCharFormatting;
+//
+//        for (int i=0; i<frameBodySize; i++) {
+//            if (frameBodyPrevious.charAt(i) != frameBody.charAt(i)) {
+//                if (continuousEscapeCodeSequence) {
+//                    continuousEscapeCodeSequence = true;
+//                }
+//            }
+//
+//        }
+//
+//        frameBodyPrevious = frameBodyLatest;
+//    }
 
-        for (int i=0; i<frameBodySize; i++) {
-            if (frameBodyPrevious.charAt(i) != frameBody.charAt(i)) {
-                if (continuousEscapeCodeSequence) {
-                    continuousEscapeCodeSequence = true;
-                }
-            }
-
-        }
-
-        frameBodyPrevious = frameBodyLatest;
-    }
-
-    private void renderFrame2() {
-//        String frame
-    }
+//    private void renderFrame2() {
+////        String frame
+//    }
 
     public void renderComponentOfIndex(int componentIndex) {
         Widget component = windowManager.contents.get(componentIndex);
@@ -51,14 +54,20 @@ public class Displayer extends DisplayCore {
 
 
         for (int rowIndex = component.y + component.height; rowIndex > component.y; rowIndex--) {
-            int from = rowIndex * cols + component.x;
+//            int from = rowIndex * cols + component.x;
+//            int to = from + component.width;
+            int from = component.x;
             int to = from + component.width;
 
-            frameBody.replace(
-                    to + 1,
-                    to + 1 + format.length(),
-                    format
-            );
+            ArrayList<Pixel> row = pixelMatrix.get(rowIndex);
+
+//            frameBody.replace(
+//                    to + 1,
+//                    to + 1 + format.length(),
+//                    format
+//            );
+            row.subList(from, to).clear();
+            row.addAll(from, component.texture.generateRepeatingSubarray(from, to));
 
 //            frameBody.replace(from, to, component.texture.fetchChunk(0, to - from));
         }
