@@ -17,7 +17,7 @@ It should definitely be used with precautions and thoughtfulness.
 
 To build and execute the example application -[`Main.java`](src/main/java/Main.java), 
 run the [`run_the_fucker.bat`](run_the_fucker.bat) script on Windows,
-or it's counterpart - [`run_the_fucker.sh`](run_the_fucker.sh) on Linux (yet to come).
+or it's counterpart - [`run_the_fucker.sh`](run_the_fucker.sh) on Linux.
 
 ## Docs
 
