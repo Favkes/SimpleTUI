@@ -1,28 +1,30 @@
 package components;
 
 public class Frame extends Widget {
-
-    public Frame(int posY,
+    public Frame(Widget parent,
+                 int posY,
                  int posX,
                  int height,
                  int width,
                  Texture texture) {
-        super(posY, posX, height, width, texture);
+        super(parent, posY, posX, height, width, texture);
     }
-    public Frame(int posY,
+    public Frame(Widget parent,
+                 int posY,
                  int posX,
                  int height,
                  int width,
                  String textureSeed) {
-        super(posY, posX, height, width, textureSeed);
+        super(parent, posY, posX, height, width, textureSeed);
     }
-    public Frame(int posY,
+    public Frame(Widget parent,
+                 int posY,
                  int posX,
                  int height,
                  int width) {
-        super(posY, posX, height, width);
+        super(parent, posY, posX, height, width);
     }
-    public Frame() { super(); }
+    public Frame(Widget parent) { super(parent); }
 
     @Override
     public void printInfo() {

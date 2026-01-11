@@ -2,7 +2,7 @@ import components.*;
 import org.fusesource.jansi.AnsiConsole;
 import ui.Color;
 import ui.Displayer;
-import ui.InputManager;
+//import ui.InputManager;
 import ui.WindowManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -73,21 +73,17 @@ public class Main {
                         Color.RESET);
 
             Frame frame1 = new Frame(
-                    5, 10, 5, 7, texture
+                    display.windowManager.root, 5, 10, 5, 7, texture
             );
             display.windowManager.contents.add(frame1);
 
             Frame frame2 = new Frame(
-                    25, 15, 7, 5, texture2
+                    display.windowManager.root, 25, 15, 7, 5, texture2
             );
             display.windowManager.contents.add(frame2);
 
             display.renderComponentOfIndex(0);
             display.renderComponentOfIndex(1);
-
-            // Main app loop
-//            display.refreshDisplay();
-//            Thread.sleep(2000);
 
 
             // Input thread setup
