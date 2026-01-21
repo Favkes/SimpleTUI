@@ -8,11 +8,11 @@ public class Text extends Widget {
     public ArrayList<Pixel> pixelArray;
 
     public Text(Widget parent,
-                int y,
-                int x,
+                int posY,
+                int posX,
                 String content,
                 FormatTuple format) {
-        super(parent, y, x, 1, content.length());
+        super(parent, posY, posX, 1, content.length());
         this.content = content;
         this.format = format;
         parent.children.add(this);
@@ -21,19 +21,19 @@ public class Text extends Widget {
         renderToPixels();
     }
     public Text(Widget parent,
-                int y,
-                int x,
+                int posY,
+                int posX,
                 String content) {
-        this(parent, y, x, content, new FormatTuple("", ""));
+        this(parent, posY, posX, content, new FormatTuple("", ""));
     }
     public Text(Widget parent,
                 String content) {
         this(parent, 0, 0, content);
     }
     public Text(Widget parent,
-                int y,
-                int x) {
-        this(parent, y, x, "");
+                int posY,
+                int posX) {
+        this(parent, posY, posX, "");
     }
     public Text(Widget parent) {
         this(parent, "");
