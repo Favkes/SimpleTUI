@@ -1,6 +1,9 @@
 package ui;
 
+import org.jline.keymap.BindingReader;
+import org.jline.keymap.KeyMap;
 import org.jline.terminal.Terminal;
+import org.jline.utils.InfoCmp;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,32 +16,41 @@ public class InputManager implements AutoCloseable {
     private final Map<Integer, Runnable> keyBindings = new ConcurrentHashMap<>();
     private Thread inputThread;
 
+    private BindingReader reader;
+    private final KeyMap<Runnable> keyMap = new KeyMap<>();
+
     public InputManager(Terminal terminalRef, AtomicBoolean appRunningRef) {
         this.terminal = terminalRef;
         this.appRunningRef = appRunningRef;
     }
 
-    public void bindKey(int keyCode, Runnable action) {
-        keyBindings.put(keyCode, action);
+    public void bindKey(InfoCmp.Capability key, Runnable action) {
+        keyMap.bind(action, KeyMap.key(terminal, key));
+    }
+    public void bindKey(String key, Runnable action) {
+        keyMap.bind(action, key);
     }
 
+
     public void start() {
-        if (running.get()) return;
-        running.set(true);
+        if (inputThread != null) return;
+
+        reader = new BindingReader(terminal.reader());
 
         inputThread = new Thread(() -> {
             try {
                 while (appRunningRef.get()) {
-                    int ch = terminal.reader().read();  // raw mode
-                    Runnable action = keyBindings.get(ch);
+                    Runnable action = reader.readBinding(keyMap);
                     if (action != null) {
                         action.run();
                     }
                 }
-            } catch (Exception e) {
-                if (running.get()) e.printStackTrace();
+            } catch (Throwable t) {
+                if (appRunningRef.get()) {
+                    t.printStackTrace();
+                }
             }
-        });
+        }, "InputManager");
 
         inputThread.setDaemon(true);
         inputThread.start();
@@ -48,7 +60,10 @@ public class InputManager implements AutoCloseable {
     public void close() throws Exception {
         running.set(false);
         try {
-            if (inputThread != null) inputThread.join(100);
+            if (inputThread != null) {
+                inputThread.interrupt();
+                inputThread.join(100);
+            }
         } catch (InterruptedException ignored) {}
     }
 }
