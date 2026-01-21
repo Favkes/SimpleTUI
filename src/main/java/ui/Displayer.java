@@ -31,7 +31,7 @@ public class Displayer extends DisplayCore {
         int globalComponentY = component.y;
         int globalComponentX = component.x;
         Widget componentParent = component.parent;
-        while (componentParent != null) {
+        while (!componentParent.isRoot()) {
             globalComponentY += componentParent.y;
             globalComponentX += componentParent.x;
             componentParent = componentParent.parent;
