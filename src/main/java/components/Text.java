@@ -1,8 +1,11 @@
 package components;
 
+import java.util.ArrayList;
+
 public class Text extends Widget {
     public String content;
     public FormatTuple format;
+    public ArrayList<Pixel> pixelArray;
 
     public Text(Widget parent,
                 int y,
@@ -13,6 +16,9 @@ public class Text extends Widget {
         this.content = content;
         this.format = format;
         parent.children.add(this);
+
+        updateContentLength();
+        renderToPixels();
     }
     public Text(Widget parent,
                 int y,
@@ -35,6 +41,34 @@ public class Text extends Widget {
 
     public void updateContentLength() {
         width = content.length();
+    }
+
+    public void updateContent(String newContent) {
+        content = newContent;
+        updateContentLength();
+        renderToPixels();
+    }
+
+    public void removeLast() {
+        if (content.isEmpty()) return;
+        updateContent(content.substring(0, content.length() - 1));
+    }
+
+    public void renderToPixels() {
+        pixelArray = new ArrayList<>();
+        for (int i = 0; i<content.length(); i++) {
+            pixelArray.add(new Pixel(format, content.charAt(i)));
+        }
+    }
+
+    public ArrayList<Pixel> generateRenderableBody(int from, int to) {
+        ArrayList<Pixel> out = new ArrayList<>();
+        for (int i = from; i < to; i++) {
+            out.add(
+                    pixelArray.get(i % pixelArray.size())
+            );
+        }
+        return out;
     }
 
     @Override

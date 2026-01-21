@@ -61,6 +61,12 @@ public class Displayer extends DisplayCore {
             ArrayList<Pixel> row = pixelMatrix.get(rowIndex);
 
             row.subList(xFrom, xTo).clear();
+            // if TEXT:
+            if (component instanceof Text text) {
+                row.addAll(xFrom, text.generateRenderableBody(_from, _to));
+                continue;
+            }
+            // else if TEXTURE
             if (component.texture instanceof AdvancedTexture advTex) {
                 row.addAll(xFrom, advTex.generateRepeatingSubarray(_from, _to, _rowIndex));
             } else {
