@@ -1,10 +1,7 @@
 package ui;
 
 
-import components.AdvancedTexture;
-import components.Pixel;
-import components.Texture;
-import components.Widget;
+import components.*;
 
 import java.util.ArrayList;
 
@@ -31,11 +28,20 @@ public class Displayer extends DisplayCore {
     public void renderComponentOfIndex(int componentIndex) {
         Widget component = windowManager.contents.get(componentIndex);
 
+        int globalComponentY = component.y;
+        int globalComponentX = component.x;
+        Widget componentParent = component.parent;
+        while (componentParent != null) {
+            globalComponentY += componentParent.y;
+            globalComponentX += componentParent.x;
+            componentParent = componentParent.parent;
+        }
+
         // Texture coordinates global (local to display)
-        int yFrom = component.y;
-        int yTo = component.y + component.height;
-        int xFrom = component.x;
-        int xTo = component.x + component.width;
+        int yFrom = globalComponentY;
+        int yTo = globalComponentY + component.height;
+        int xFrom = globalComponentX;
+        int xTo = globalComponentX + component.width;
 
         // Horizontal boundary handling
         if (xTo < 0) return;
@@ -72,7 +78,6 @@ public class Displayer extends DisplayCore {
             } else {
                 row.addAll(xFrom, component.texture.generateRepeatingSubarray(_from, _to));
             }
-
         }
     }
 

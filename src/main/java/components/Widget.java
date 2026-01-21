@@ -23,6 +23,7 @@ public abstract class Widget {
         this.width = width;
         this.texture = texture;
         this.parent = parent;
+        this.children = new ArrayList<>();
     }
 
     public Widget(Widget parent,
