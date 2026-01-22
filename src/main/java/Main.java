@@ -142,9 +142,8 @@ public class Main {
 
             Text messageWriteBoxText = new Text(
                     messageWriteBox,
-                    display.terminal.getHeight()-2-1,
-                    26,
-                    ""
+                    0, 0,
+                    "Content Preview (Click Enter to remove)"
             );
             display.windowManager.contents.add(messageWriteBoxText);
             messageWriteBoxText.updateContentLength();
