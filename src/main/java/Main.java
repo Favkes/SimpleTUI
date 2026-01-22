@@ -4,6 +4,7 @@ import components.*;
 import ui.Color;
 import ui.Displayer;
 //import ui.InputManager;
+import ui.KeyActionContainer;
 import ui.WindowManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -51,13 +52,13 @@ public class Main {
             System.out.print("\n");
             texture.test();
 
-            for (int i=0; i<10; i++)
-                System.out.printf(
-                        "%s%s\n",
-                        texture.generateRepeatingSubarray(0, 20, i).stream()
-                                .map(Pixel::toString)
-                                .collect(Collectors.joining()),
-                        Color.RESET);
+//            for (int i=0; i<10; i++)
+//                System.out.printf(
+//                        "%s%s\n",
+//                        texture.generateRepeatingSubarray(0, 20, i).stream()
+//                                .map(Pixel::toString)
+//                                .collect(Collectors.joining()),
+//                        Color.RESET);
 
             Frame frame1 = new Frame(
                     display.windowManager.root, 5, 10, 5, 7, texture
@@ -106,7 +107,7 @@ public class Main {
                     )
             );
 
-            // FRAMES
+            // FRAMES --------------------------------------------------------------------------------------------------
 //            display.windowManager.contents.add(
 //                    new Frame(
 //                            display.windowManager.root,
@@ -156,12 +157,16 @@ public class Main {
             display.inputManager.bindKey("\033[D", () -> frame1.x--);
             display.inputManager.bindKey("\033[B", () -> frame1.y++);
             display.inputManager.bindKey("\033[C", () -> frame1.x++);
+            display.inputManager.bindKey("\u0012", () -> frame1.x += 0);            // Ctrl+R
+            display.inputManager.bindKey("a", () -> frame1.x += 2);            // Ctrl+R
+
+
 
             display.inputManager.bindKey("\r", () -> messageWriteBoxText.updateContent(""));    // enter
             display.inputManager.bindKey("\177", messageWriteBoxText::removeLast);  // backspace
 
             // adding all the valid ASCII characters:
-            for (char c = 32; c <= 126; c++) {
+            for (char c = 32; c <=126 ; c++) { // 33 - 126
                 char keyChar = c;
                 display.inputManager.bindKey(
                         String.valueOf(keyChar),

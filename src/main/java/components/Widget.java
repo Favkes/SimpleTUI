@@ -10,6 +10,7 @@ public abstract class Widget {
     public Texture texture;
     public Widget parent;
     public ArrayList<Widget> children;
+    public boolean isFocused;
 
     public Widget(Widget parent,
                   int posY,
@@ -24,6 +25,7 @@ public abstract class Widget {
         this.texture = texture;
         this.parent = parent;
         this.children = new ArrayList<>();
+        this.isFocused = false;
     }
 
     public Widget(Widget parent,

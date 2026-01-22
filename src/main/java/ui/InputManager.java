@@ -1,23 +1,23 @@
 package ui;
 
+import components.Widget;
 import org.jline.keymap.BindingReader;
 import org.jline.keymap.KeyMap;
 import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InputManager implements AutoCloseable {
     private final Terminal terminal;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final AtomicBoolean appRunningRef;
-    private final Map<Integer, Runnable> keyBindings = new ConcurrentHashMap<>();
     private Thread inputThread;
 
     private BindingReader reader;
     private final KeyMap<Runnable> keyMap = new KeyMap<>();
+//    private ArrayList<KeyActionContainer> keyActionList = new ArrayList<>();
 
     public InputManager(Terminal terminalRef, AtomicBoolean appRunningRef) {
         this.terminal = terminalRef;
@@ -25,10 +25,16 @@ public class InputManager implements AutoCloseable {
     }
 
     public void bindKey(InfoCmp.Capability key, Runnable action) {
-        keyMap.bind(action, KeyMap.key(terminal, key));
+        KeyActionContainer actionContainer = new KeyActionContainer(action);
+        keyMap.bind(actionContainer::run, KeyMap.key(terminal, key));
+    }
+    public void bindKey(String key, Runnable action, Widget requiredFocusWidget) {
+        KeyActionContainer actionContainer = new KeyActionContainer(action, requiredFocusWidget);
+        keyMap.bind(actionContainer::run, key);
     }
     public void bindKey(String key, Runnable action) {
-        keyMap.bind(action, key);
+        KeyActionContainer actionContainer = new KeyActionContainer(action);
+        keyMap.bind(actionContainer::run, key);
     }
 
 
