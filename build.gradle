@@ -1,7 +1,11 @@
 plugins {
-    id 'java'
     id 'application'
+    id 'java-library'
+    id 'maven-publish'
 }
+
+group = 'com.mojprojekt'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -12,6 +16,29 @@ dependencies {
     implementation 'org.jline:jline:3.26.0'
 }
 
+java {
+    withSourcesJar()    // generate sources jar
+    withJavadocJar()    // generate javadoc jar
+}
+
 application {
     mainClass = 'Main' // replace with your fully qualified Main class
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Favkes/SimpleTUI")   // local publication
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
