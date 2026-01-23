@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.mojprojekt'
+group = 'com.github.favkes.simpletui'
 version = '1.0.0'
 
 repositories {
@@ -27,8 +27,13 @@ application {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        create("mavenJava", MavenPublication) {
+            groupId = project.group
+            artifactId = "SimpleTUI"    // (== repo name)
+            version = project.version
             from components.java
+            artifact(sourcesJar)
+            artifact(javadocJar)
         }
     }
     repositories {
