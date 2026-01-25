@@ -5,7 +5,9 @@ plugins {
 }
 
 group = 'com.github.favkes.simpletui'
-version = '1.0.0'
+//version = '1.0.0'
+version = System.getenv("GITHUB_REF_NAME")?.replace("v", "")
+            ?: "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
