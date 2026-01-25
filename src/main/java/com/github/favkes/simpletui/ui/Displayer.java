@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class Displayer extends DisplayCore {
     public String frameBodyPrevious;
-    public WindowManager windowManager;
+    public PageManager pageManager;
 
-    public Displayer(WindowManager windowManager, Texture texture) throws Exception {
+    public Displayer(Texture texture) throws Exception {
         super(texture);
 
         frameBody = new StringBuilder();
@@ -17,7 +17,7 @@ public class Displayer extends DisplayCore {
                 .append(Color.Foreground.YELLOW)
                 .append(".".repeat(frameBodySize))
                 .append(Color.RESET);
-        this.windowManager = windowManager;
+        this.pageManager = new PageManager();
     }
 
     private void goToPixel(int y, int x) {
@@ -25,9 +25,30 @@ public class Displayer extends DisplayCore {
         terminal.writer().print(String.format("\u001B[%d;%dH", y + 1, x + 1));
     }
 
-    public void renderComponentOfIndex(int componentIndex) {
-        Widget component = windowManager.contents.get(componentIndex);
+    public void renderAll() {
+        for (Page page : pageManager.pages) {
+            for (Widget widget : page.components) {
+                renderWidget(widget);
+            }
+        }
+    }
 
+    public void renderPage(Page page) {
+        for (Widget widget : page.components) {
+            renderWidget(widget);
+        }
+    }
+
+    public void renderComponentOfIndex(int componentIndex) {
+        /*
+            Not useful anymore, going to disappear in a few versions!
+        */
+
+//        Widget component = pageManager.pages.get(componentIndex);
+//        renderWidget(component);
+    }
+
+    public void renderWidget(Widget component) {
         if (!component.shouldRender) return;
 
         int globalComponentY = component.y;

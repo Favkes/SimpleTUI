@@ -4,14 +4,12 @@ import com.github.favkes.simpletui.components.*;
 import com.github.favkes.simpletui.ui.Color;
 import com.github.favkes.simpletui.ui.Displayer;
 //import com.github.favkes.simpletui.ui.InputManager;
-import com.github.favkes.simpletui.ui.WindowManager;
 
 
 public class Main {
     public static void main(String[] args) {
         // ANSI support install
 //        AnsiConsole.systemInstall();
-        WindowManager manager = new WindowManager();
         AdvancedTexture displayBackgroundTexture = new AdvancedTexture(
                 Color.generateRGB(false, 30, 30, 30)
                 + Color.generateRGB(true, 30, 30, 30)
@@ -25,10 +23,13 @@ public class Main {
                 1
         );
 
-        try (Displayer display = new Displayer(manager, displayBackgroundTexture)) {
+        try (Displayer display = new Displayer(displayBackgroundTexture)) {
 
             // App init
             display.init();
+
+            // Initialize new page
+            Page page1 = display.pageManager.newPage();
 
 
             AdvancedTexture texture = new AdvancedTexture(
@@ -57,9 +58,9 @@ public class Main {
 //                        Color.RESET);
 
             Frame frame1 = new Frame(
-                    display.windowManager.root, 5, 10, 5, 7, texture
+                    page1.root, 5, 10, 5, 7, texture
             );
-            display.windowManager.contents.add(frame1);
+            page1.components.add(frame1);
 
 
             // WINDOW BORDERS
@@ -78,71 +79,63 @@ public class Main {
                     r -> 0
             );
             Frame windowBorderLeft = new Frame(
-                    display.windowManager.root, 0, 0, display.terminal.getHeight(), 1, windowBorderTexture
+                    page1.root, 0, 0, display.terminal.getHeight(), 1, windowBorderTexture
             );
-            display.windowManager.contents.add(windowBorderLeft);
+            page1.components.add(windowBorderLeft);
             Frame windowBorderRight = new Frame(
-                    display.windowManager.root, 0, display.terminal.getWidth()-1, display.terminal.getHeight(), 1, windowBorderTexture
+                    page1.root, 0, display.terminal.getWidth()-1, display.terminal.getHeight(), 1, windowBorderTexture
             );
-            display.windowManager.contents.add(windowBorderRight);
+            page1.components.add(windowBorderRight);
             Frame windowBorderTop = new Frame(
-                    display.windowManager.root, 0, 0, 1, display.terminal.getWidth(), windowBorderTexture2
+                    page1.root, 0, 0, 1, display.terminal.getWidth(), windowBorderTexture2
             );
-            display.windowManager.contents.add(windowBorderTop);
+            page1.components.add(windowBorderTop);
             Frame windowBorderBottom = new Frame(
-                    display.windowManager.root, display.terminal.getHeight()-1, 0, 1, display.terminal.getWidth(), windowBorderTexture2
+                    page1.root, display.terminal.getHeight()-1, 0, 1, display.terminal.getWidth(), windowBorderTexture2
             );
-            display.windowManager.contents.add(windowBorderBottom);
+            page1.components.add(windowBorderBottom);
 
             // vertical line between menu and chat
-            display.windowManager.contents.add(
+            page1.components.add(
                     new Frame(
-                            display.windowManager.root,
+                            page1.root,
                             1, 25, display.terminal.getHeight()-2, 1,
                             windowBorderTexture
                     )
             );
 
             // FRAMES --------------------------------------------------------------------------------------------------
-//            display.windowManager.contents.add(
-//                    new Frame(
-//                            display.windowManager.root,
-//                            2, 3, 4, 6,
-//                            texture
-//                    )
-//            );
-
             Frame menuAFrame = new Frame(
-                    display.windowManager.root,
+                    page1.root,
                     2, 3, 4, 6,
                     texture
-            ); display.windowManager.contents.add(menuAFrame);
+            ); page1.components.add(menuAFrame);
             Text menuAText = new Text(
                     menuAFrame,
                     0, 0,
                     "Menu A"
-            ); display.windowManager.contents.add(menuAText);
+            ); page1.components.add(menuAText);
 
             AdvancedTexture messageWriteBoxTexture = new AdvancedTexture(
                     Color.generateBgFg(200, 200, 200, 30, 30, 80)
                     + " "
             );
             Frame messageWriteBox = new Frame(
-                    display.windowManager.root,
+                    page1.root,
                     display.terminal.getHeight()-2-1,
                     26,
                     2,
                     display.terminal.getWidth()-26-1,
                     messageWriteBoxTexture
             );
-            display.windowManager.contents.add(messageWriteBox);
+            page1.components.add(messageWriteBox);
 
             Text messageWriteBoxText = new Text(
                     messageWriteBox,
                     0, 0,
                     "Content Preview (Click Enter to remove)"
             );
-            display.windowManager.contents.add(messageWriteBoxText);
+            page1.components.add(messageWriteBoxText);
             messageWriteBoxText.updateContentLength();
             messageWriteBoxText.renderToPixels();
 
@@ -174,12 +167,10 @@ public class Main {
             while (display.running.get()) {
                 display.generateBlankPixelMatrix();
                 display.rebuildEmpty();
-                for (int i=0; i<display.windowManager.contents.size(); i++)
-                    display.renderComponentOfIndex(i);
-//                display.renderComponentOfIndex(0);
-//                display.renderComponentOfIndex(1);
+
+                display.renderPage(page1);
+
                 display.refreshDisplay();
-//                frame1.y += 1;
                 Thread.sleep(1000 / 20);
             }
         }
