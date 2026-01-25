@@ -50,3 +50,10 @@ publishing {
         }
     }
 }
+
+tasks.withType(PublishToMavenRepository) {
+    onlyIf {
+        // only run when pushed with a tag (release)
+        System.getenv("GITHUB_REF_NAME")?.startsWith("refs/tags/") ?: false
+    }
+}
