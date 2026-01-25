@@ -34,8 +34,6 @@ publishing {
             artifactId = "SimpleTUI"    // (== repo name)
             version = project.version
             from components.java
-            artifact(sourcesJar)
-            artifact(javadocJar)
         }
     }
     repositories {
