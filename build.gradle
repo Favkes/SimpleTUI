@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.favkes.simpletui'
+group = 'com.github.favkes'
 
 // Dynamic version based on tag
 def gitRef = System.getenv("GITHUB_REF") ?: "refs/heads/master"
@@ -37,6 +37,30 @@ publishing {
             artifactId = "simpletui"
             version = project.version
             from components.java
+
+            pom {
+                name.set("SimpleTUI")
+                description.set("A simple yet effective terminal UI library in Java")
+                url.set("https://github.com/Favkes/SimpleTUI")
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("Favkes")
+                        name.set("Favkes ;)")
+                        email.set("contact@favkes.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/Favkes/SimpleTUI.git")
+                    developerConnection.set("scm:git:ssh://github.com/Favkes/SimpleTUI.git")
+                    url.set("https://github.com/Favkes/SimpleTUI")
+                }
+            }
         }
     }
     repositories {
