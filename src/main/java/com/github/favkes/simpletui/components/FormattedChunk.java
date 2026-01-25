@@ -1,4 +1,4 @@
-package components;
+package com.github.favkes.simpletui.components;
 
 public class FormattedChunk {
     public int start;

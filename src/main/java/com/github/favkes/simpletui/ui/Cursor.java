@@ -1,4 +1,4 @@
-package ui;
+package com.github.favkes.simpletui.ui;
 
 public class Cursor {
     public static final String HIDE = "\u001B[?25l";

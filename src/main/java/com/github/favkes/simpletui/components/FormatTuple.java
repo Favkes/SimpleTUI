@@ -1,8 +1,6 @@
-package components;
+package com.github.favkes.simpletui.components;
 
-import ui.Color;
-
-import java.text.Format;
+import com.github.favkes.simpletui.ui.Color;
 
 public final class FormatTuple {
     public final String fg;

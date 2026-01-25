@@ -1,12 +1,11 @@
-package ui;
+package com.github.favkes.simpletui.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
 
-import components.Pixel;
-import components.Texture;
+import com.github.favkes.simpletui.components.Pixel;
+import com.github.favkes.simpletui.components.Texture;
 import org.jline.terminal.Attributes;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.terminal.Terminal;

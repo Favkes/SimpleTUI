@@ -1,4 +1,4 @@
-package components;
+package com.github.favkes.simpletui.components;
 
 public class Window extends Frame {
     public Window(Widget parent,

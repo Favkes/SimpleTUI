@@ -1,5 +1,5 @@
-package components;
-import ui.Color;
+package com.github.favkes.simpletui.components;
+import com.github.favkes.simpletui.ui.Color;
 
 import java.util.ArrayList;
 import java.util.regex.*;

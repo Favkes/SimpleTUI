@@ -1,14 +1,10 @@
-import components.*;
+import com.github.favkes.simpletui.components.*;
 //import org.fusesource.jansi.AnsiConsole;
 //import org.jline.utils.InfoCmp;
-import ui.Color;
-import ui.Displayer;
-//import ui.InputManager;
-import ui.KeyActionContainer;
-import ui.WindowManager;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
+import com.github.favkes.simpletui.ui.Color;
+import com.github.favkes.simpletui.ui.Displayer;
+//import com.github.favkes.simpletui.ui.InputManager;
+import com.github.favkes.simpletui.ui.WindowManager;
 
 
 public class Main {

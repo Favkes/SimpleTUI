@@ -1,6 +1,6 @@
-package ui;
+package com.github.favkes.simpletui.ui;
 
-import components.Widget;
+import com.github.favkes.simpletui.components.Widget;
 
 public class KeyActionContainer {
     Runnable action;

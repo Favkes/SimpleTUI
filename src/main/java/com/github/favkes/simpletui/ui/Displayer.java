@@ -1,7 +1,7 @@
-package ui;
+package com.github.favkes.simpletui.ui;
 
 
-import components.*;
+import com.github.favkes.simpletui.components.*;
 
 import java.util.ArrayList;
 

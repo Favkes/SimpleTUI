@@ -1,4 +1,4 @@
-package components;
+package com.github.favkes.simpletui.components;
 
 import java.util.ArrayList;
 import java.util.function.Function;

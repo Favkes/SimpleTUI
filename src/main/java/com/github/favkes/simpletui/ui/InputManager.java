@@ -1,12 +1,11 @@
-package ui;
+package com.github.favkes.simpletui.ui;
 
-import components.Widget;
+import com.github.favkes.simpletui.components.Widget;
 import org.jline.keymap.BindingReader;
 import org.jline.keymap.KeyMap;
 import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
 
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InputManager implements AutoCloseable {

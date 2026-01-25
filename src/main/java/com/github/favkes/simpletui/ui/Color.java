@@ -1,4 +1,4 @@
-package ui;
+package com.github.favkes.simpletui.ui;
 
 @SuppressWarnings("unused")
 public class Color {

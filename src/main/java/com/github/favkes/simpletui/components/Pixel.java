@@ -1,6 +1,6 @@
-package components;
+package com.github.favkes.simpletui.components;
 
-import ui.Color;
+import com.github.favkes.simpletui.ui.Color;
 
 public class Pixel {
     public FormatTuple formatTuple;
