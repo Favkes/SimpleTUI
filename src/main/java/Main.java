@@ -115,7 +115,6 @@ public class Main {
 //                            texture
 //                    )
 //            );
-
             Frame menuAFrame = new Frame(
                     display.windowManager.root,
                     2, 3, 4, 6,
