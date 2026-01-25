@@ -55,3 +55,9 @@ publishing {
 //        System.getenv("GITHUB_REF_NAME")?.startsWith("refs/tags/") ?: false
 //    }
 //}
+
+task printVersion {
+    doLast {
+        println ">>> Gradle thinks the project version is: ${project.version}"
+    }
+}
