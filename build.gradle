@@ -34,7 +34,7 @@ publishing {
     publications {
         create("mavenJava", MavenPublication) {
             groupId = project.group
-            artifactId = "SimpleTUI"
+            artifactId = "simpletui"
             version = project.version
             from components.java
         }
