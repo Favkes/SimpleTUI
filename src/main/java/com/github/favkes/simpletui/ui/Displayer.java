@@ -28,6 +28,8 @@ public class Displayer extends DisplayCore {
     public void renderComponentOfIndex(int componentIndex) {
         Widget component = windowManager.contents.get(componentIndex);
 
+        if (!component.shouldRender) return;
+
         int globalComponentY = component.y;
         int globalComponentX = component.x;
         Widget componentParent = component.parent;

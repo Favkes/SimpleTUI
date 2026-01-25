@@ -154,7 +154,7 @@ public class Main {
             display.inputManager.bindKey("\033[B", () -> frame1.y++);
             display.inputManager.bindKey("\033[C", () -> frame1.x++);
             display.inputManager.bindKey("\u0012", () -> frame1.x += 0);            // Ctrl+R
-            display.inputManager.bindKey("a", () -> frame1.x += 2);            // Ctrl+R
+            display.inputManager.bindKey("\033\r", () -> frame1.shouldRender =! frame1.shouldRender);            // Ctrl+R
 
 
 

@@ -11,6 +11,7 @@ public abstract class Widget {
     public Widget parent;
     public ArrayList<Widget> children;
     public boolean isFocused;
+    public boolean shouldRender;
 
     public Widget(Widget parent,
                   int posY,
@@ -26,6 +27,7 @@ public abstract class Widget {
         this.parent = parent;
         this.children = new ArrayList<>();
         this.isFocused = false;
+        this.shouldRender = true;
     }
 
     public Widget(Widget parent,
@@ -54,6 +56,9 @@ public abstract class Widget {
     }
 
     public boolean isRoot() { return parent == null; }
+
+    public void show() { this.shouldRender = true; }
+    public void hide() { this.shouldRender = false; }
 
     public abstract void printInfo();
 }
