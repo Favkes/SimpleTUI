@@ -2,20 +2,21 @@ name: Publish SimpleTUI
 
 on:
   push:
-#    branches: [ master ]
     tags: [ 'v*' ]
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v5
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '25'
@@ -24,10 +25,8 @@ jobs:
       - name: Print project version
         run: ./gradlew printVersion
 
-
       - name: Publish to GitHub Packages
         env:
-          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          ./gradlew build publishMavenJavaPublicationToGitHubPackagesRepository --debug --stacktrace
+        run: ./gradlew publish --stacktrace --info

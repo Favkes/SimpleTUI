@@ -5,10 +5,12 @@ plugins {
 }
 
 group = 'com.github.favkes.simpletui'
+
+// Dynamic version based on tag
 def gitRef = System.getenv("GITHUB_REF") ?: "refs/heads/master"
 version = gitRef.startsWith("refs/tags/") ?
         gitRef.replace("refs/tags/v", "") :
-        "1.0.0-SNAPSHOT"
+        "1.0.0"   // fallback must be valid string
 
 repositories {
     mavenCentral()
@@ -20,19 +22,19 @@ dependencies {
 }
 
 java {
-    withSourcesJar()    // generate sources jar
-    withJavadocJar()    // generate javadoc jar
+    withSourcesJar()
+    withJavadocJar()
 }
 
 application {
-    mainClass = 'Main' // replace with your fully qualified Main class
+    mainClass = 'Main'
 }
 
 publishing {
     publications {
         create("mavenJava", MavenPublication) {
             groupId = project.group
-            artifactId = "SimpleTUI"    // (== repo name)
+            artifactId = "SimpleTUI"
             version = project.version
             from components.java
         }
@@ -40,24 +42,18 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Favkes/SimpleTUI")   // local publication
+            url = uri("https://maven.pkg.github.com/Favkes/SimpleTUI")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
-                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+                username = System.getenv("GITHUB_ACTOR")  // automatic actor
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
 }
-//
-//tasks.withType(PublishToMavenRepository) {
-//    onlyIf {
-//        // only run when pushed with a tag (release)
-//        System.getenv("GITHUB_REF_NAME")?.startsWith("refs/tags/") ?: false
-//    }
-//}
 
+// debug task
 task printVersion {
     doLast {
-        println ">>> Gradle thinks the project version is: ${project.version}"
+        println ">>> Gradle project version: ${project.version}"
     }
 }
