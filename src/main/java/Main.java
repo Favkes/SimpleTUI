@@ -3,6 +3,7 @@ import com.github.favkes.simpletui.components.*;
 //import org.jline.utils.InfoCmp;
 import com.github.favkes.simpletui.ui.Color;
 import com.github.favkes.simpletui.ui.Displayer;
+import com.github.favkes.simpletui.ui.KeyBind;
 //import com.github.favkes.simpletui.ui.InputManager;
 
 
@@ -147,7 +148,8 @@ public class Main {
             display.inputManager.bindKey("\033[B", () -> frame1.y++);
             display.inputManager.bindKey("\033[C", () -> frame1.x++);
             display.inputManager.bindKey("\u0012", () -> frame1.x += 0);            // Ctrl+R
-            display.inputManager.bindKey("\033\r", () -> frame1.shouldRender =! frame1.shouldRender);            // Ctrl+R
+            page1.keyBinds.add(new KeyBind("\033\r", () -> frame1.shouldRender =! frame1.shouldRender));
+            display.inputManager.loadFromIterable(page1.keyBinds);  // Alt+Enter
 
 
 

@@ -1,13 +1,17 @@
 package com.github.favkes.simpletui.components;
 
 import com.github.favkes.simpletui.ui.Displayer;
+import com.github.favkes.simpletui.ui.KeyBind;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Page {
     public ArrayList<Widget> components;
     public Widget root;
     public boolean shouldRender;
+
+    public List<KeyBind> keyBinds;
 
 
     public Page() {
@@ -19,6 +23,7 @@ public class Page {
             }
         };
         shouldRender = true;
+        keyBinds = new ArrayList<>();
     }
 
     public void hide() {
