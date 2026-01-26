@@ -6,6 +6,7 @@ import org.jline.keymap.KeyMap;
 import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InputManager implements AutoCloseable {
@@ -15,7 +16,7 @@ public class InputManager implements AutoCloseable {
     private Thread inputThread;
 
     private BindingReader reader;
-    private final KeyMap<Runnable> keyMap = new KeyMap<>();
+    private KeyMap<Runnable> keyMap = new KeyMap<>();
 //    private ArrayList<KeyActionContainer> keyActionList = new ArrayList<>();
 
     public InputManager(Terminal terminalRef, AtomicBoolean appRunningRef) {
@@ -28,14 +29,31 @@ public class InputManager implements AutoCloseable {
         keyMap.bind(actionContainer::run, KeyMap.key(terminal, key));
     }
     public void bindKey(String key, Runnable action, Widget requiredFocusWidget) {
-        KeyActionContainer actionContainer = new KeyActionContainer(action, requiredFocusWidget);
-        keyMap.bind(actionContainer::run, key);
+        KeyBind keyBind = new KeyBind(key, action, requiredFocusWidget);
+        keyMap.bind(keyBind::run, key);
     }
     public void bindKey(String key, Runnable action) {
-        KeyActionContainer actionContainer = new KeyActionContainer(action);
-        keyMap.bind(actionContainer::run, key);
+        KeyBind keyBind = new KeyBind(key, action);
+        keyMap.bind(keyBind::run, key);
+    }
+    public void bindKey(KeyBind keyBind) {
+        keyMap.bind(keyBind::run, keyBind.sequence);
     }
 
+    public void clear() {
+        keyMap = new KeyMap<>();
+    }
+
+    public void loadFromIterable(Iterable<KeyBind> iterable) {
+        for (KeyBind keyBind : iterable) {
+            bindKey(keyBind);
+        }
+    }
+
+    public void reloadFromIterable(Iterable<KeyBind> iterable) {
+        clear();
+        loadFromIterable(iterable);
+    }
 
     public void start() {
         if (inputThread != null) return;
