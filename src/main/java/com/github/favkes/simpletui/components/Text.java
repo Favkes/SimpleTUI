@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Text extends Widget {
     public String content;
+    public int charLimit;
     public FormatTuple format;
     public ArrayList<Pixel> pixelArray;
 
@@ -16,6 +17,7 @@ public class Text extends Widget {
         this.content = content;
         this.format = format;
         parent.children.add(this);
+        charLimit = 10_000;
 
         updateContentLength();
         renderToPixels();
@@ -43,10 +45,14 @@ public class Text extends Widget {
         width = content.length();
     }
 
-    public void updateContent(String newContent) {
+    public boolean updateContent(String newContent) {
+        if (charLimit < newContent.length()) {
+            return false;
+        }
         content = newContent;
         updateContentLength();
         renderToPixels();
+        return true;
     }
 
     public void removeLast() {
