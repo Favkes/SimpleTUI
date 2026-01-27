@@ -9,7 +9,17 @@ public class Displayer extends DisplayCore {
     public String frameBodyPrevious;
     public PageManager pageManager;
 
-    public Displayer(Texture texture) throws Exception {
+    private static volatile Displayer INSTANCE;
+
+    public static synchronized Displayer init(Texture texture) throws Exception {
+        if (INSTANCE != null) {
+            throw new IllegalStateException("Displayer already initialized");
+        }
+        INSTANCE = new Displayer(texture);
+        return INSTANCE;
+    }
+
+    private Displayer(Texture texture) throws Exception {
         super(texture);
 
         frameBody = new StringBuilder();
