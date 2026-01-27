@@ -12,10 +12,9 @@ public class Displayer extends DisplayCore {
     private static volatile Displayer INSTANCE;
 
     public static synchronized Displayer init(Texture texture) throws Exception {
-        if (INSTANCE != null) {
-            throw new IllegalStateException("Displayer already initialized");
+        if (INSTANCE == null) {
+            INSTANCE = new Displayer(texture);
         }
-        INSTANCE = new Displayer(texture);
         return INSTANCE;
     }
 
