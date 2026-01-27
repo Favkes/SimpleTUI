@@ -17,7 +17,7 @@ public class InputManager implements AutoCloseable {
 
     private BindingReader reader;
     private KeyMap<Runnable> keyMap;
-    private final ModeManager<KeyMap<Runnable>> keyMapModeManager;
+    public final ModeManager<KeyMap<Runnable>> keyMapModeManager;
 //    private final ModeManager<BindingReader> readerModeManager;
 
 
