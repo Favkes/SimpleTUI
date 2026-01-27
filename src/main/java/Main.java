@@ -24,7 +24,7 @@ public class Main {
                 1
         );
 
-        try (Displayer display = new Displayer(displayBackgroundTexture)) {
+        try (Displayer display = Displayer.init(displayBackgroundTexture)) {
 
             // App init
             display.init();
