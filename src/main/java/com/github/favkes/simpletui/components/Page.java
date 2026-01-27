@@ -4,10 +4,13 @@ import com.github.favkes.simpletui.ui.Displayer;
 import com.github.favkes.simpletui.ui.KeyBind;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Page {
     public ArrayList<Widget> components;
+    private final Map<String, Widget> componentsMap;
     public Widget root;
     public boolean shouldRender;
 
@@ -16,12 +19,15 @@ public class Page {
 
     public Page() {
         components = new ArrayList<>();
+        componentsMap = new HashMap<>();
+
         root = new Widget() {
             @Override
             public void printInfo() {
                 System.out.println("<Root Widget>");
             }
         };
+
         shouldRender = true;
         keyBinds = new ArrayList<>();
     }
@@ -42,5 +48,14 @@ public class Page {
         shouldRender =! shouldRender;
         if (shouldRender) show();
         else hide();
+    }
+
+    public void add(String widgetName, Widget widget) {
+        components.add(widget);
+        componentsMap.put(widgetName, widget);
+    }
+
+    public Widget componentOfName(String widgetName) {
+        return componentsMap.get(widgetName);
     }
 }
