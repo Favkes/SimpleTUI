@@ -6,6 +6,7 @@ import org.jline.keymap.KeyMap;
 import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
 
+import java.io.IOError;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -85,11 +86,19 @@ public class InputManager implements AutoCloseable {
         inputThread = new Thread(() -> {
             try {
                 while (appRunningRef.get()) {
-//                    KeyMap<Runnable> km = keyMapModeManager.modeItem();
-//                    BindingReader reader = readerModeManager.modeItem();
-                    Runnable action = reader.readBinding(keyMap);
-                    if (action != null) {
-                        action.run();
+                    try {
+                        //                    KeyMap<Runnable> km = keyMapModeManager.modeItem();
+                        //                    BindingReader reader = readerModeManager.modeItem();
+                        Runnable action = reader.readBinding(keyMap);
+                        if (action != null) {
+                            action.run();
+                        }
+                    } catch (IOError e) {
+                        if (e.getCause() instanceof java.io.InterruptedIOException) {
+                            break;
+                        } else {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } catch (Throwable t) {
