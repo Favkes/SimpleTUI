@@ -31,6 +31,7 @@ public class Main {
 
             // Initialize new page
             Page page1 = display.pageManager.newPage();
+            display.inputManager.newMap("page1");
 
 
             AdvancedTexture texture = new AdvancedTexture(
@@ -165,12 +166,13 @@ public class Main {
                 );
             }
 
-
+            display.inputManager.switchMap();
             while (display.running.get()) {
                 display.generateBlankPixelMatrix();
                 display.rebuildEmpty();
 
                 display.renderPage(page1);
+//                display.inputManager.bindKey("3", () -> frame1.x += 1);
 
                 display.refreshDisplay();
                 Thread.sleep(1000 / 20);
