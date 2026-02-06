@@ -35,15 +35,15 @@ public class Main {
 
 
             AdvancedTexture texture = new AdvancedTexture(
-                    Color.generateBgFg(130, 30, 30, 30, 30, 30)
+                    Color.generateFgBg(130, 30, 30, 30, 30, 30)
                     + "|"
-                    + Color.generateBgFg(150, 50, 50, 150, 50, 50)
+                    + Color.generateFgBg(150, 50, 50, 150, 50, 50)
                     + "."
-                    + Color.generateBgFg(170, 70, 70, 170, 70, 70)
+                    + Color.generateFgBg(170, 70, 70, 170, 70, 70)
                     + "."
-                    + Color.generateBgFg(170, 100, 100, 170, 100, 100)
+                    + Color.generateFgBg(170, 100, 100, 170, 100, 100)
                     + "."
-                    + Color.generateBgFg(230, 130, 130, 230, 130, 130)
+                    + Color.generateFgBg(230, 130, 130, 230, 130, 130)
                     + ".",
                     1,
                     r -> (100 - r) % 5
@@ -119,7 +119,7 @@ public class Main {
             ); page1.components.add(menuAText);
 
             AdvancedTexture messageWriteBoxTexture = new AdvancedTexture(
-                    Color.generateBgFg(200, 200, 200, 30, 30, 80)
+                    Color.generateFgBg(200, 200, 200, 30, 30, 80)
                     + " "
             );
             Frame messageWriteBox = new Frame(
