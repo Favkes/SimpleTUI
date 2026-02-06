@@ -1,7 +1,6 @@
 package com.github.favkes.simpletui.components;
 
-import com.github.favkes.simpletui.ui.Displayer;
-import com.github.favkes.simpletui.ui.KeyBind;
+import com.github.favkes.simpletui.io.KeyBind;
 
 import java.util.ArrayList;
 import java.util.HashMap;

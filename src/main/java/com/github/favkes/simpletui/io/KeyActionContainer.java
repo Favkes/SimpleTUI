@@ -1,4 +1,4 @@
-package com.github.favkes.simpletui.ui;
+package com.github.favkes.simpletui.io;
 
 import com.github.favkes.simpletui.components.Widget;
 

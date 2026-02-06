@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.github.favkes.simpletui.components.Pixel;
 import com.github.favkes.simpletui.components.Texture;
+import com.github.favkes.simpletui.io.InputManager;
 import org.jline.terminal.Attributes;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.terminal.Terminal;

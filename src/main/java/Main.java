@@ -3,8 +3,8 @@ import com.github.favkes.simpletui.components.*;
 //import org.jline.utils.InfoCmp;
 import com.github.favkes.simpletui.ui.Color;
 import com.github.favkes.simpletui.ui.Displayer;
-import com.github.favkes.simpletui.ui.KeyBind;
-//import com.github.favkes.simpletui.ui.InputManager;
+import com.github.favkes.simpletui.io.KeyBind;
+//import com.github.favkes.simpletui.io.InputManager;
 
 
 public class Main {
