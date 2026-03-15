@@ -30,7 +30,7 @@ java {
 }
 
 application {
-    mainClass = 'Main'
+    mainClass.set('com.github.favkes.simpletui.preview.Main')
 }
 
 publishing {
@@ -79,8 +79,40 @@ publishing {
 }
 
 // debug task
-task printVersion {
+tasks.register("printVersion") {
     doLast {
         println ">>> Gradle project version: ${project.version}"
     }
+}
+
+// example script requirements
+sourceSets {
+    examples {
+        java {
+            srcDir 'examples'
+        }
+        resources {
+            srcDir 'examples'
+        }
+        // examples/ can now use the library (src.main) as dependency
+        compileClasspath += sourceSets.main.output + configurations.compileClasspath
+        runtimeClasspath += sourceSets.main.output + configurations.runtimeClasspath
+    }
+}
+
+// running example script from it's separate module
+def examplesInstallDir = layout.buildDirectory.dir("install/${project.name}/lib/examples")
+tasks.named("installDist") {
+    dependsOn(sourceSets.examples.output)
+
+    doLast {
+        copy {
+            from sourceSets.examples.output
+            into examplesInstallDir
+        }
+    }
+}
+// add additional files (example/ module) to the start script
+tasks.named("startScripts") {
+    classpath += files(examplesInstallDir)
 }

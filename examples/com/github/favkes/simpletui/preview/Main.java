@@ -1,3 +1,5 @@
+package com.github.favkes.simpletui.preview;
+
 import com.github.favkes.simpletui.components.*;
 //import org.fusesource.jansi.AnsiConsole;
 //import org.jline.utils.InfoCmp;
