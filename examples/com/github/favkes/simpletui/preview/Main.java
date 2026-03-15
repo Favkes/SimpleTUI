@@ -6,6 +6,7 @@ import com.github.favkes.simpletui.components.*;
 import com.github.favkes.simpletui.ui.Color;
 import com.github.favkes.simpletui.ui.Displayer;
 import com.github.favkes.simpletui.io.KeyBind;
+import com.github.favkes.simpletui.io.TextureLoader;
 //import com.github.favkes.simpletui.io.InputManager;
 
 
@@ -36,20 +37,21 @@ public class Main {
             display.inputManager.newMap("page1");
 
 
-            AdvancedTexture texture = new AdvancedTexture(
-                    Color.generateFgBg(130, 30, 30, 30, 30, 30)
-                    + "|"
-                    + Color.generateFgBg(150, 50, 50, 150, 50, 50)
-                    + "."
-                    + Color.generateFgBg(170, 70, 70, 170, 70, 70)
-                    + "."
-                    + Color.generateFgBg(170, 100, 100, 170, 100, 100)
-                    + "."
-                    + Color.generateFgBg(230, 130, 130, 230, 130, 130)
-                    + ".",
-                    1,
-                    r -> (100 - r) % 5
-            );
+//            AdvancedTexture texture = new AdvancedTexture(
+//                    Color.generateFgBg(130, 30, 30, 30, 30, 30)
+//                    + "|"
+//                    + Color.generateFgBg(150, 50, 50, 150, 50, 50)
+//                    + "."
+//                    + Color.generateFgBg(170, 70, 70, 170, 70, 70)
+//                    + "."
+//                    + Color.generateFgBg(170, 100, 100, 170, 100, 100)
+//                    + "."
+//                    + Color.generateFgBg(230, 130, 130, 230, 130, 130)
+//                    + ".",
+//                    1,
+//                    r -> (100 - r) % 5
+//            );
+            AdvancedTexture texture = TextureLoader.getInstance().load("textures/example.json", Main.class);
             System.out.print("\n");
             texture.test();
 
