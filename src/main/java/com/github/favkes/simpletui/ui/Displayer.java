@@ -39,9 +39,7 @@ public class Displayer extends DisplayCore {
 
     public void renderAll() {
         for (Page page : pageManager.pages) {
-            for (Widget widget : page.components) {
-                renderWidget(widget);
-            }
+            renderPage(page);
         }
     }
 
