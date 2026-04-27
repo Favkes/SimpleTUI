@@ -176,6 +176,8 @@ public class Main {
             display.inputManager.switchMap();
                 log.info("CTRL+R call");
                 log.info("CTRL+R call");
+            display.inputManagerInit();
+//            log.disable();
             while (display.running.get()) {
                 display.generateBlankPixelMatrix();
                 display.rebuildEmpty();

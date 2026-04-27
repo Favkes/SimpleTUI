@@ -75,7 +75,9 @@ public class DisplayCore implements AutoCloseable {
         if (isTerminalAltBufferCompatible()) {
             enterAltBuffer();
         }
-
+    }
+    public void inputManagerInit() {
+        log.info("Initializing inputManager...");
         inputManager.start();
     }
     public void exit() throws IOException {
