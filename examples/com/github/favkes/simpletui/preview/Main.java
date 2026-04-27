@@ -37,7 +37,10 @@ public class Main {
 
             // Initialize new page
             Page page1 = display.pageManager.newPage();
+            Page altpage = display.pageManager.newPage();
             display.inputManager.newMap("page1");
+            display.inputManager.newMap("altpage");
+
 
 
 //            AdvancedTexture texture = new AdvancedTexture(
@@ -150,12 +153,14 @@ public class Main {
 
 
             // Input thread setup
-            display.inputManager.bindKey("\033", () -> display.running.set(false)); // escape
+//            display.inputManager.bindKey(KeyType.ARROW_RIGHT)
+            // ESCAPE BINDS *HAVE* TO USE DOUBLE ESCAPE CODE, OTHERWISE OTHER ESCAPE-PREFIXED KEYS FALL BACK TO ESCAPE
+            display.inputManager.bindKey("\033\033", () -> display.running.set(false)); // escape
             display.inputManager.bindKey("\033[A", () -> frame1.y--);
             display.inputManager.bindKey("\033[D", () -> frame1.x--);
             display.inputManager.bindKey("\033[B", () -> frame1.y++);
             display.inputManager.bindKey("\033[C", () -> frame1.x++);
-            display.inputManager.bindKey("\u0012", () -> frame1.x += 0);            // Ctrl+R
+//            display.inputManager.bindKey("\u0012", () -> frame1.x += 0);            // Ctrl+R
             page1.keyBinds.add(new KeyBind("\033\r", () -> frame1.shouldRender =! frame1.shouldRender));
             display.inputManager.loadFromIterable(page1.keyBinds);  // Alt+Enter
 
@@ -173,9 +178,24 @@ public class Main {
                 );
             }
 
-            display.inputManager.switchMap();
+            display.inputManager.bindKey("\u0012", () -> {
+                display.inputManager.keyMapModeManager.modeSwitchUp();
+                frame1.x++;
                 log.info("CTRL+R call");
+            });            // ctrl + R
+
+            display.inputManager.switchModeTo("altpage");
+//            display.inputManager.switchMap();
+
+            display.inputManager.bindKey("\r", () -> messageWriteBoxText.updateContent("owowo"));    // enter
+            display.inputManager.bindKey("\033\033", () -> { display.running.set(false); });            // esc
+            display.inputManager.bindKey("\u0012", () -> {
+                display.inputManager.keyMapModeManager.modeSwitchUp();
+                frame1.x++;
                 log.info("CTRL+R call");
+            });            // ctrl + R
+
+            display.inputManager.switchModeTo("page1");
             display.inputManagerInit();
 //            log.disable();
             while (display.running.get()) {

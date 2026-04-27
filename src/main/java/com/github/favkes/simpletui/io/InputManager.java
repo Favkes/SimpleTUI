@@ -22,7 +22,6 @@ public class InputManager implements AutoCloseable {
     private BindingReader reader;
     private KeyMap<Runnable> keyMap;
     public final ModeManager<KeyMap<Runnable>> keyMapModeManager;
-//    private final ModeManager<BindingReader> readerModeManager;
 
 
     public InputManager(Terminal terminalRef, AtomicBoolean appRunningRef) {
@@ -31,44 +30,46 @@ public class InputManager implements AutoCloseable {
 
         keyMap = new KeyMap<>();
         keyMapModeManager = new ModeManager<>();
-//        readerModeManager = new ModeManager<>();
     }
 
     public void bindKey(InfoCmp.Capability key, Runnable action) {
         KeyActionContainer actionContainer = new KeyActionContainer(action);
-        keyMapModeManager.modeItem().bind(actionContainer::run, KeyMap.key(terminal, key));
+        keyMapModeManager.currentModeItem().bind(actionContainer::run, KeyMap.key(terminal, key));
     }
     public void bindKey(String key, Runnable action, Widget requiredFocusWidget) {
         KeyBind keyBind = new KeyBind(key, action, requiredFocusWidget);
-        keyMapModeManager.modeItem().bind(keyBind::run, key);
+        keyMapModeManager.currentModeItem().bind(keyBind::run, key);
     }
     public void bindKey(String key, Runnable action) {
         KeyBind keyBind = new KeyBind(key, action);
-        keyMapModeManager.modeItem().bind(keyBind::run, key);
-//        keyMap.bind(keyBind::run, key);
+        keyMapModeManager.currentModeItem().bind(keyBind::run, key);
     }
     public void bindKey(KeyBind keyBind) {
-        keyMapModeManager.modeItem().bind(keyBind::run, keyBind.sequence);
-//        keyMap.bind(keyBind::run, keyBind.sequence);
+        keyMapModeManager.currentModeItem().bind(keyBind::run, keyBind.sequence);
     }
 
 
     public void newMap(String mapName) {
         KeyMap<Runnable> newMap = new KeyMap<>();
+        newMap.setNomatch(() -> {
+            log.info("No match for given key.");
+        });
+        newMap.setAmbiguousTimeout(200);
         keyMapModeManager.add(mapName, newMap);
+
+        log.info(
+                String.format("Added %d. map \"%s\" to keyMapModeManager.", keyMapModeManager.numberOfModes, mapName)
+        );
 
 //        BindingReader newReader = new BindingReader(terminal.reader());
 //        readerModeManager.add(mapName, newReader);
     }
 
-    public void switchMap() {
-        stop();
-        keyMap = keyMapModeManager.modeItem();
-        start();
+    public void switchModeTo(String modeName) {
+        keyMapModeManager.modeSet(modeName);
+        keyMap = keyMapModeManager.currentModeItem();
+        log.info(String.format("Keymap switched to: %d: \"%s\"", keyMapModeManager.mode, keyMapModeManager.currentModeName()));
     }
-//    public void clear() {
-//        keyMap = new KeyMap<>();
-//    }
 
     public void loadFromIterable(Iterable<KeyBind> iterable) {
         for (KeyBind keyBind : iterable) {
@@ -76,10 +77,6 @@ public class InputManager implements AutoCloseable {
         }
     }
 
-//    public void reloadFromIterable(Iterable<KeyBind> iterable) {
-//        clear();
-//        loadFromIterable(iterable);
-//    }
 
     public void start() {
         if (inputThread != null) return;
@@ -94,7 +91,7 @@ public class InputManager implements AutoCloseable {
                     try {
                         //                    KeyMap<Runnable> km = keyMapModeManager.modeItem();
                         //                    BindingReader reader = readerModeManager.modeItem();
-                        Runnable action = reader.readBinding(keyMap);
+                        Runnable action = reader.readBinding(keyMapModeManager.currentModeItem());
                         if (action != null) {
                             action.run();
                         }
