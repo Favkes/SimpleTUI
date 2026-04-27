@@ -1,11 +1,14 @@
 package com.github.favkes.simpletui.ui;
 
 
+import com.github.favkes.simpletui.Logger;
 import com.github.favkes.simpletui.components.*;
 
 import java.util.ArrayList;
 
 public class Displayer extends DisplayCore {
+    public static final Logger log = Logger.logger();
+
     public String frameBodyPrevious;
     public PageManager pageManager;
 

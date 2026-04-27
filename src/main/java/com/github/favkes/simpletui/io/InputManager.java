@@ -1,5 +1,6 @@
 package com.github.favkes.simpletui.io;
 
+import com.github.favkes.simpletui.Logger;
 import com.github.favkes.simpletui.components.Widget;
 import com.github.favkes.simpletui.ui.ModeManager;
 import org.jline.keymap.BindingReader;
@@ -11,6 +12,8 @@ import java.io.IOError;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InputManager implements AutoCloseable {
+    private static final Logger log = Logger.logger();
+
     private final Terminal terminal;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final AtomicBoolean appRunningRef;
@@ -80,11 +83,13 @@ public class InputManager implements AutoCloseable {
 
     public void start() {
         if (inputThread != null) return;
+        log.info(".start() called");
 
         reader = new BindingReader(terminal.reader());
 
         inputThread = new Thread(() -> {
             try {
+                log.info("Starting new thread...");
                 while (appRunningRef.get()) {
                     try {
                         //                    KeyMap<Runnable> km = keyMapModeManager.modeItem();
@@ -95,8 +100,11 @@ public class InputManager implements AutoCloseable {
                         }
                     } catch (IOError e) {
                         if (e.getCause() instanceof java.io.InterruptedIOException) {
+                            log.error(e);
+                            log.info("Stopping thread...");
                             break;
                         } else {
+                            log.error(e);
                             e.printStackTrace();
                         }
                     }
@@ -106,6 +114,7 @@ public class InputManager implements AutoCloseable {
                     t.printStackTrace();
                 }
             }
+            log.info("Thread stopped.");
         }, "InputManager");
 
         inputThread.setDaemon(true);

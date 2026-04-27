@@ -1,5 +1,6 @@
 package com.github.favkes.simpletui.preview;
 
+import com.github.favkes.simpletui.Logger;
 import com.github.favkes.simpletui.components.*;
 //import org.fusesource.jansi.AnsiConsole;
 //import org.jline.utils.InfoCmp;
@@ -11,6 +12,8 @@ import com.github.favkes.simpletui.io.TextureLoader;
 
 
 public class Main {
+    public static final Logger log = Logger.logger();
+
     public static void main(String[] args) {
         // ANSI support install
 //        AnsiConsole.systemInstall();
@@ -171,6 +174,8 @@ public class Main {
             }
 
             display.inputManager.switchMap();
+                log.info("CTRL+R call");
+                log.info("CTRL+R call");
             while (display.running.get()) {
                 display.generateBlankPixelMatrix();
                 display.rebuildEmpty();

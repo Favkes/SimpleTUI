@@ -1,5 +1,6 @@
 package com.github.favkes.simpletui.components;
 
+import com.github.favkes.simpletui.Logger;
 import com.github.favkes.simpletui.io.KeyBind;
 
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Page {
+    public static final Logger log = Logger.logger();
+
     public ArrayList<Widget> components;
     private final Map<String, Widget> componentsMap;
     public Widget root;

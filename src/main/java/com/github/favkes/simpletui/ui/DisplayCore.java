@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.github.favkes.simpletui.Logger;
 import com.github.favkes.simpletui.components.Pixel;
 import com.github.favkes.simpletui.components.Texture;
 import com.github.favkes.simpletui.io.InputManager;
@@ -13,6 +14,8 @@ import org.jline.terminal.Terminal;
 
 
 public class DisplayCore implements AutoCloseable {
+    public static final Logger log = Logger.logger();
+
     StringBuilder frameBody;
     ArrayList<ArrayList<Pixel>> pixelMatrix;
     public Texture texture;

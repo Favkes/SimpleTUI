@@ -1,5 +1,7 @@
 package com.github.favkes.simpletui.io;
 
+import com.github.favkes.simpletui.Logger;
+
 import java.util.function.IntUnaryOperator;
 
 interface IntExpression {
@@ -10,6 +12,8 @@ interface IntExpression {
 }
 
 public class ExpressionParser {
+    public static final Logger log = Logger.logger();
+
     private final String s;
     private int pos = 0;
 

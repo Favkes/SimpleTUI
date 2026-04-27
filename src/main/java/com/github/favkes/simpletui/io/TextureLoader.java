@@ -1,5 +1,6 @@
 package com.github.favkes.simpletui.io;
 
+import com.github.favkes.simpletui.Logger;
 import com.github.favkes.simpletui.components.AdvancedTexture;
 import com.github.favkes.simpletui.ui.Color;
 import org.json.JSONObject;
@@ -16,6 +17,8 @@ import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
 
 public class TextureLoader {
+    public static final Logger log = Logger.logger();
+
     private static volatile TextureLoader INSTANCE;
     private Path root;
 
